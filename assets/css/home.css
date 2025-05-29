@@ -1,0 +1,68 @@
+html {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background:  linear-gradient(to bottom, #e0f0fd, #93bfe5);
+}
+
+main.chat-grid {
+  padding-top: 100px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  padding: 100px 20px 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.chat-card {
+  position: relative;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Efeito de blur e escurecimento no fundo, sem afetar o texto */
+.chat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(2px) brightness(0.7);
+  z-index: 0;
+}
+
+/* Sobreposição com texto visível */
+.card-overlay {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.card-overlay h2 {
+  margin: 0;
+  font-size: 24px;
+  color: white;
+}
+
+.chat-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}

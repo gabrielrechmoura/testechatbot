@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>RHBot - Chat</title>
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <style> /*-- Início da seção de estilos CSS */
+
+    /* Estilo geral do corpo da página */
+    body {  
+      font-family: 'Segoe UI', sans-serif;  /* Define a fonte padrão */
+      background: linear-gradient(to right, #6997b6, #2c6396);  /* Fundo com gradiente azul */
+      margin: 0;  /* Remove margens padrão */
+    }
+    
+    main {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Estilo do container principal do chat */
+    #chat {
+      width: 600px;  /* Largura fixa */
+      height: 700px;  /* Altura fixa */
+      max-height: 90vh;  /* Altura máxima de 90% da tela */
+      background: #fff;  /* Fundo branco */
+      border-radius: 12px;  /* Bordas arredondadas */
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);  /* Sombra suave */
+      display: flex;  /* Usa flexbox para organizar os elementos internos */
+      flex-direction: column;  /* Organiza os filhos em coluna */
+      overflow: hidden;  /* Esconde qualquer conteúdo que ultrapasse */
+    }
+
+    /* Estilo do cabeçalho do chat */
+    #header {
+      background: #2193b0;  /* Cor de fundo azul */
+      color: white;  /* Texto branco */
+      padding: 15px;  /* Espaçamento interno */
+      font-weight: bold;  /* Texto em negrito */
+      font-size: 18px;  /* Tamanho da fonte */
+    }
+
+    /* Área onde as mensagens são exibidas */
+    #messages {
+      flex: 1;  /* Ocupa todo o espaço disponível */
+      padding: 15px;  /* Espaçamento interno */
+      overflow-y: auto;  /* Habilita scroll vertical se necessário */
+      background: #f9f9f9;  /* Cor de fundo cinza claro */
+    }
+
+    /* Estilo base para todas as mensagens */
+    .message {
+      margin: 10px 0;  /* Espaçamento externo */
+      max-width: 80%;  /* Largura máxima */
+      padding: 10px 15px;  /* Espaçamento interno */
+      border-radius: 20px;  /* Bordas arredondadas */
+      line-height: 1.3;  /* Espaçamento entre linhas */
+      word-wrap: break-word;  /* Quebra palavras longas */
+      display: inline-block;  /* Permite que a largura se ajuste ao conteúdo */
+    }
+
+    /* Estilo específico para mensagens do bot */
+    .bot {
+      background: #96c7cebd;  /* Cor de fundo azul claro */
+      color: #006064;  /* Cor do texto azul escuro */
+      align-self: flex-start;  /* Alinha à esquerda */
+      border-bottom-left-radius: 0;  /* Remove arredondamento no canto inferior esquerdo */
+    }
+
+
+    /* Estilo específico para mensagens do usuário */
+    .user {
+      background: #96bad1a1;  /* Cor de fundo verde claro */
+      color: #264e81;  /* Cor do texto verde escuro */
+      align-self: flex-end;  /* Alinha à direita */
+      border-bottom-right-radius: 0;  /* Remove arredondamento no canto inferior direito */
+      text-align: right;  /* Alinha o texto à direita */
+    }
+
+    /* Área de entrada de texto */
+    #input-area {
+      display: flex;  /* Organiza os elementos filhos em linha */
+      border-top: 1px solid #ddd;  /* Linha divisória no topo */
+    }
+
+    /* Campo de entrada de texto */
+    #userInput {
+      flex: 1;  /* Ocupa todo o espaço disponível */
+      border: none;  /* Remove borda */
+      padding: 15px;  /* Espaçamento interno */
+      font-size: 16px;  /* Tamanho da fonte */
+      outline: none;  /* Remove contorno ao focar */
+    }
+
+    /* Estilo do botão de enviar */
+    button {
+      background: #35749e;  /* Cor de fundo azul */
+      color: white;  /* Texto branco */
+      border: none;  /* Remove borda */
+      padding: 15px 20px;  /* Espaçamento interno */
+      font-size: 16px;  /* Tamanho da fonte */
+      cursor: pointer;  /* Muda cursor para pointer ao passar o mouse */
+      transition: 0.3s;  /* Suaviza transições de estado */
+    }
+
+    /* Efeito hover no botão */
+    button:hover {
+      background: #197a91;  /* Cor mais escura ao passar o mouse */
+    }
+
+    /* Estilo dos botões de opção */
+    .opcao-btn {
+      background: #b0d4ec;  /* Cor de fundo verde muito claro */
+      color: #0f1658;  /* Cor do texto verde escuro */
+      border-radius: 20px;  /* Bordas arredondadas */
+      padding: 10px 15px;  /* Espaçamento interno */
+      border: none;  /* Remove borda */
+      cursor: pointer;  /* Muda cursor para pointer */
+      font-weight: bold;  /* Texto em negrito */
+      margin-top: 10px;  /* Espaçamento superior */
+    }
+
+    /* Efeito hover nos botões de opção */
+    .opcao-btn:hover {
+      background: #75a1db;  /* Cor de fundo mais escura ao passar o mouse */
+    }
+  </style>
+</head>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <h1>Portal de Chatbots</h1>
+            <nav>
+            <a href="../index.html">Início</a>
+            <a href="../chat1_teddybot/index.html">Teddy Bot</a>
+            <a href="../chat2_milkbot/index.html">Milk Bot</a>
+            <a href="../chat3/index.html">Diamond Bot</a>
+            <a href="../chat4/index.html">Chat 4 - Sem nome</a>
+            <a href="../chat5-hortilar bot/hortlar.html">HortLar Bot</a>
+            </nav>
+        </div>
+    </header>
+  <script src="../assets/js/header.js"></script>
+
+  <main>
+    <!-- Container principal do chat -->
+      <div id="chat">
+        <!-- Cabeçalho com nome do bot -->
+        <div id="header">🐱 Leo, o leopardo</div>
+        
+        <!-- Área de mensagens (contém a mensagem inicial do bot) -->
+        <div id="messages">
+          <div class="message bot">Olá! Me chamo Leo, o leopardo. Como posso lhe ajudar hoje, Talita?</div>
+        </div>
+        
+        <!-- Área de entrada de mensagens -->
+        <div id="input-area">
+          <!-- Campo de texto para o usuário digitar -->
+          <input type="text" id="userInput" placeholder="Digite aqui...">
+          <!-- Botão para enviar a mensagem -->
+          <button onclick="sendMessage()">Enviar</button>
+        </div>
+      </div>
+  </main>
+  
+
+  <!-- Início da seção de JavaScript -->
+  <script>
+
+    window.onload = function() {
+        setTimeout(() => mostrarBotoes(), 1000);
+    }
+     /* Função para enviar mensagem do usuário e obter resposta do bot */
+    function sendMessage() {
+      const input = document.getElementById('userInput'); // Obtém o elemento de entrada de texto
+      const msg = input.value.trim(); // Remove espaços em branco no início/fim e armazena a mensagem
+
+      if (msg === "") return; // Se a mensagem estiver vazia, não faz nada
+
+      addMessage(msg, "user");  // Adiciona a mensagem do usuário ao chat
+      input.value = ""; // Limpa o campo de entrada
+
+      const resposta = responder(msg);  // Obtém a resposta do bot para a mensagem do usuário
+      setTimeout(() => addMessage(resposta, "bot"), 500); // Adiciona a resposta do bot após um pequeno atraso (500ms)
+    }
+
+    /* Função que adiciona uma mensagem ao chat */
+    function addMessage(text, type) {
+      const messagesDiv = document.getElementById('messages');  // Obtém a div que contém todas as mensagens
+
+      const container = document.createElement('div');  // Cria um container para a mensagem (para controlar o alinhamento)
+      container.style.display = 'flex';
+      container.style.justifyContent = type === 'user' ? 'flex-end' :  'flex-start';  // Alinha à direita para mensagens do usuário, esquerda para o bot
+
+      const div = document.createElement('div');  // Cria a div que vai conter o texto da mensagem
+      div.className = 'message ' + type;  // Adiciona classes CSS
+
+      // Se for mensagem do bot, converte quebras de linha para tags <br>
+      if (type === 'bot') { 
+        div.innerHTML = text.replace(/\n/g, "<br>"); // quebra linha só nas mensagens do bot
+      } else {
+        div.textContent = text; // Mensagens do usuário usam textContent para segurança
+      }
+
+      // Adiciona a mensagem ao container e o container à área de mensagens
+      container.appendChild(div);
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight; // Rola automaticamente para a última mensagem
+    }
+
+    agurdandoQtd = false; // confirmacoa de qtd
+    agurdandoID = false; // confirmacao de ID
+    agurdandoPreco = false;
+
+    idProduto = null;
+    qtdProduto = null;
+    precoProduto = null;
+
+
+    rastrearID = false
+
+    excluirID = false
+    excluirQtd = false
+
+
+    /* Função da Lógica principal do bot - responde às mensagens do usuário */
+    function responder(msg) {
+      msg = msg.toLowerCase();  // Converte a mensagem para minúsculas para facilitar a comparação
+
+
+      ////// Incluir Produto
+      if (agurdandoID) {
+        const quantidade = parseInt(msg);
+        idProduto = quantidade;
+        if (!isNaN(quantidade)) {
+          agurdandoID = false;
+          agurdandoQtd = true;
+          addMessage("Insira uma quantidade: ", "bot");
+        } else {
+          addMessage("Por favor, insira um ID válido", "bot");
+        }
+        return;
+      }
+
+      if (agurdandoQtd) {
+        const quantidade = parseInt(msg);
+        qtdProduto = quantidade;
+        if (!isNaN(quantidade)) {
+          agurdandoQtd = false;
+          agurdandoPreco = true;
+          addMessage("Insira um preço: ", "bot");
+        } else {
+          addMessage("Por favor, insira um preço válido", "bot");
+        }
+        return;
+      }
+
+      if (agurdandoPreco) {
+        const quantidade = parseFloat(msg);
+        precoProduto = quantidade;
+        if (!isNaN(quantidade)) {
+          agurdandoPreco = false;
+          addMessage(`Aperte qualquer tecla para confimar \n ID =${idProduto}\nQuantidade =${qtdProduto}\n Preço =${precoProduto}   `, "bot");
+        } else {
+          addMessage("Por favor, insira um preço válido", "bot");
+        }
+        return;
+      }
+
+      // Rastrear Produto
+
+      if (rastrearID) {
+        const quantidade = parseInt(msg);
+        if (!isNaN(quantidade)) {
+          rastrearID = false;
+          addMessage("Seu produto está saindo da filial ", "bot");
+        } else {
+          addMessage("Por favor, insira um ID válido", "bot");
+        }
+        return;
+      }
+
+      // Excluir Produto
+
+      if (excluirID) {
+        const quantidade = parseInt(msg);
+        idProduto = quantidade;
+        if (!isNaN(quantidade)) {
+          excluirID = false;
+          excluirQtd = true;
+          addMessage("Insira a quantidade que você deseja excluir: ", "bot");
+        } else {
+          addMessage("Por favor, insira um ID válido", "bot");
+        }
+        return;
+      }
+
+      if (excluirQtd) {
+        const quantidade = parseInt(msg);
+        qtdProduto = quantidade;
+        if (!isNaN(quantidade)) {
+          excluirQtd = false;
+          addMessage(`Talita, você excluiu ${qtdProduto} produtos que possuem o ID ${idProduto}`, "bot");
+        } else {
+          addMessage("Por favor, insira um ID válido", "bot");
+        }
+        return;
+      }
+
+
+
+
+
+      // Respostas fixas para mensagens específicas
+      const respostasFixas = {  
+        "motivação": "Acredite em você! O esforço de hoje é o sucesso de amanhã.",
+        "clima": "Ainda não posso ver o clima real, mas espero que esteja ensolarado!",
+        "sair": "Até logo! Estarei aqui se precisar.",
+      };
+
+      // Se a mensagem corresponder a uma resposta fixa, retorna ela
+      if (respostasFixas[msg]) {
+        return respostasFixas[msg];
+      }
+
+      // Se a mensagem incluir hora
+      if (msg.includes("hora")) {
+        const agora = new Date();
+        return `Agora são ${agora.getHours()}h${agora.getMinutes().toString().padStart(2, '0')}m`;
+      }
+
+      if (msg.includes("teste") || msg.includes("testes")) {
+        const teste = [
+            "Deu certo",
+            "Funcionou", 
+            "Certo"
+        ]
+    
+        return teste[Math.floor (Math.random() * teste.length)];
+      }
+
+      // Se a mensagem incluir piada pega uma dessas respostas aleatoriamente
+      if (msg.includes("piada")) {
+        const piadas = [
+          "Por que o JavaScript foi ao médico? Porque tinha muitos bugs!",
+          "Como o programador toma café? Com Java!",
+          "Por que o dev terminou com a namorada? Porque ela tinha muitos argumentos."
+        ];
+        return piadas[Math.floor(Math.random() * piadas.length)];
+      }
+
+      
+      // Verifica se a mensagem contém palavras relacionadas a benefícios
+      if (msg.includes("menu") || msg.includes("menus") || msg.includes("filial") || msg.includes("filiais")) {
+        setTimeout(() => mostrarBotoes(), 1000);  // Mostra botões de opções após 1 segundo
+        return;
+      }
+
+      // Resposta para perguntas sobre contrato de trabalho
+      if (msg.includes("contrato de trabalho")) {
+        return `Você pode acessar o seu contrato de trabalho pelo portal interno da empresa. É só entrar em www.empresaX.com/portalrh, fazer login com seu CPF e a senha provisória que enviamos por e-mail. Qualquer problema no acesso, estamos aqui pra ajudar!`
+      }
+
+      // Resposta para perguntas sobre horário de trabalho
+      if (msg.includes("horário de trabalho") || msg.includes("trabalho") || msg.includes("horário") || msg.includes("horario") || msg.includes("horario de trabalho")) {
+        return `Nossa jornada padrão é de segunda a sexta-feira, das 9h às 18h, com 1 hora de pausa para o almoço. Alguns setores têm horários flexíveis — confirme com sua liderança se for o caso! 😊`
+      }
+
+      // Resposta para perguntas sobre integração
+      if (msg.includes("1") || msg.includes("1")) {
+        return `<strong>Insira:</strong> \n✔️ Um ID de 5 números para sua camiseta \n✔️ Quantos produtos têm no estoque \n✔️ Preço dado ao produto`
+      }
+      
+      
+
+      // Resposta padrão caso não entenda a mensagem
+      return "Desculpe, não entendi. Tente perguntar sobre benefícios ou motivação.";
+    }
+
+    /* Função que Mostra botões */
+    function mostrarBotoes() {
+        const messagesDiv = document.getElementById("messages");
+
+        // Botões de opções de benefícios
+        const opcoes = [
+            { 
+            texto: "Filial 1 (Camisetas)", 
+            resposta: "<strong>Escolha: \n </strong> <strong>(1) </strong>Incluir novo pedido. \n <strong>(2) </strong> Rastrear pedido existente. \n <strong>(3) </strong>Excluir pedido existente." },
+            { 
+            texto: "Filial 2 (Calças)", 
+            resposta: "<strong>Escolha: \n </strong> <strong>(1) </strong>Incluir novo pedido. \n <strong>(2) </strong> Rastrear pedido existente. \n <strong>(3) </strong> Excluir pedido existente." },
+            { 
+            texto: "Filial 3 (Coleção Inverno)", 
+            resposta: "<strong>Escolha: \n </strong> <strong>(1) </strong>Incluir novo pedido. \n <strong>(2) </strong> Rastrear pedido existente. \n  <strong>(3) </strong>Excluir pedido existente." }
+            
+        ];
+        
+        // Cria container para os botões
+        const container = document.createElement("div");
+        container.style.display = "flex";
+        container.style.flexDirection = "column";
+        container.style.rowgap = "10px";
+        container.style.marginTop = "10px"; 
+        
+        // Cria um botão para cada opção
+        opcoes.forEach(opcao => {
+            const btn = document.createElement("button");
+            btn.className = "opcao-btn";
+            btn.textContent = opcao.texto;
+            btn.onclick = () => {
+            addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+            
+            // Se clicou em "Nada, obrigado", apenas remove os botões
+            if (opcao.texto === "❌ Nada, obrigado") {
+                container.remove();
+                return; // ← impede que o restante do código rode
+            }
+
+
+            addMessage(opcao.resposta, "bot");
+            container.remove();
+
+            // Cria botões de ação após selecionar uma opção
+            const novoContainer = document.createElement("div");
+            novoContainer.style.display = "flex";
+            novoContainer.style.gap = "10px";
+            novoContainer.style.marginTop = "10px";
+            
+            // Botão para ver outras opções
+            const repetirBtn = document.createElement("button");
+            repetirBtn.className = "opcao-btn";
+            repetirBtn.style.marginTop = "10px";
+            repetirBtn.textContent = "🔁 Ver outra filial";
+            repetirBtn.onclick = () => {
+                addMessage("Ver outra filial", "user");
+                novoContainer.remove();
+                mostrarBotoes(); // Mostra os botões novamente
+            };
+
+            const incluirBtn = document.createElement("button");
+            incluirBtn.className = "opcao-btn";
+            incluirBtn.style.marginTop = "10px";
+            incluirBtn.textContent = "Incluir Pedido";
+            incluirBtn.onclick = () => {
+                addMessage("Incluir Pedido", "user");
+                novoContainer.remove();
+
+                agurdandoID = true;
+                addMessage("Insira um ID", "bot");                
+            };
+
+            const rastrearBtn = document.createElement("button");
+            rastrearBtn.className = "opcao-btn";
+            rastrearBtn.style.marginTop = "10px";
+            rastrearBtn.textContent = "Rastrear Pedido";
+            rastrearBtn.onclick = () => {
+                addMessage("Rastrear Pedido", "user");
+                novoContainer.remove();
+
+                rastrearID = true;
+                addMessage("Insira um ID para rastreio", "bot");                
+            };
+
+            const excluirBtn = document.createElement("button");
+            excluirBtn.className = "opcao-btn";
+            excluirBtn.style.marginTop = "10px";
+            excluirBtn.textContent = "Remover Pedido";
+            excluirBtn.onclick = () => {
+                addMessage("Remover Pedido", "user");
+                novoContainer.remove();
+
+                excluirID = true;
+                addMessage("Insira um ID para exclusão", "bot");                
+            };
+            
+            // Botão para encerrar
+            const naoBtn = document.createElement("button");
+            naoBtn.className = "opcao-btn";
+            naoBtn.textContent = "❌ Não, obrigado";
+            naoBtn.onclick = () => {
+                addMessage("Não, obrigado", "user");
+                novoContainer.remove();
+            };
+            
+            // Adiciona os botões ao container e ao chat
+            novoContainer.appendChild(incluirBtn);
+            novoContainer.appendChild(rastrearBtn);
+            novoContainer.appendChild(excluirBtn);
+            novoContainer.appendChild(repetirBtn);
+            novoContainer.appendChild(naoBtn);
+            messagesDiv.appendChild(novoContainer);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            };
+
+
+            container.appendChild(btn);
+        });
+        
+        // Adiciona os botões ao chat
+        messagesDiv.appendChild(container);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+    // Permite enviar mensagem pressionando Enter
+    document.getElementById("userInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Evita o comportamento padrão do Enter
+        sendMessage();  // Chama a função de enviar mensagem
+      }
+    });
+  </script>
+</body>
+</html>

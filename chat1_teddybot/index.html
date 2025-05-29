@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>RHBot - Chat</title>
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #520000, #470101);
+      margin: 0;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+    }
+
+    #chat {
+      width: 600px;
+      height: 700px;
+      max-height: 90vh;
+      background: #570303;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(253, 252, 252, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #header {
+      background: #fafafa;
+      color: rgb(82, 5, 5);
+      padding: 15px;
+      font-weight: bold;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #header img {
+      border-radius: 50%;
+    }
+
+    #messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: #470101;
+    }
+
+    .message {
+      margin: 10px 0;
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      line-height: 1.3;
+      word-wrap: break-word;
+      display: inline-block;
+    }
+
+    .bot {
+      background: #ffffff;
+      color: #000000;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+
+    .user {
+      background: #7a3232;
+      color: #f8e1e1;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+      text-align: right;
+    }
+
+    #input-area {
+      display: flex;
+      border-top: 1px solid #fff3f3;
+    }
+
+    #userInput {
+      flex: 1;
+      border: none;
+      padding: 15px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    button {
+      background: #550000;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #af0404;
+    }
+
+    .opcao-btn {
+      background: #f0d6d6;
+      color: #000000;
+      border-radius: 20px;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .opcao-btn:hover {
+      background: #940404;
+    }
+  </style>
+</head>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <h1>Portal de Chatbots</h1>
+            <nav>
+            <a href="../index.html">Início</a>
+            <a href="../chat1_teddybot/index.html">Teddy Bot</a>
+            <a href="../chat2_milkbot/index.html">Milk Bot</a>
+            <a href="../chat3/index.html">Diamond Bot</a>
+            <a href="../chat4/index.html">Chat 4 - Sem nome</a>
+            <a href="../chat5-hortilar bot/hortlar.html">HortLar Bot</a>
+            </nav>
+        </div>
+    </header>
+  <script src="../assets/js/header.js"></script>
+
+  <!-- CONTEÚDO DO CHAT -->
+  <main>
+    <div id="chat">
+      <div id="header"><img src="tedperfil.png" alt="" width="35px"> TEDDYBOT</div>
+      <div id="messages">
+        <div class="message bot">
+          <strong>Olá!!🤗 Tudo bem?, como posso ajudar hoje?...</strong><br><br>
+          Além das opções abaixo também posso te informar o <strong>horario</strong>, o <strong>clima</strong>, e te incentivar com uma ótima <strong>motivação</strong>!💙🤩
+        </div>
+      </div>
+      <div id="input-area">
+        <input type="text" id="userInput" placeholder="Digite aqui...">
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Início da seção de JavaScript -->
+  <script>
+
+    window.onload = function() {
+        setTimeout(() => mostrarBotoes(), 1000);
+    }
+
+     /* Função para enviar mensagem do usuário e obter resposta do bot */
+    function sendMessage() {
+      const input = document.getElementById('userInput'); // Obtém o elemento de entrada de texto
+      const msg = input.value.trim(); // Remove espaços em branco no início/fim e armazena a mensagem
+
+      if (msg === "") return; // Se a mensagem estiver vazia, não faz nada
+
+      addMessage(msg, "user");  // Adiciona a mensagem do usuário ao chat
+      input.value = ""; // Limpa o campo de entrada
+
+      const resposta = responder(msg);  // Obtém a resposta do bot para a mensagem do usuário
+      setTimeout(() => addMessage(resposta, "bot"), 500); // Adiciona a resposta do bot após um pequeno atraso (500ms)
+    }
+
+    /* Função que adiciona uma mensagem ao chat */
+    function addMessage(text, type) {
+      const messagesDiv = document.getElementById('messages');  // Obtém a div que contém todas as mensagens
+
+      const container = document.createElement('div');  // Cria um container para a mensagem (para controlar o alinhamento)
+      container.style.display = 'flex';
+      container.style.justifyContent = type === 'user' ? 'flex-end' :  'flex-start';  // Alinha à direita para mensagens do usuário, esquerda para o bot
+
+      const div = document.createElement('div');  // Cria a div que vai conter o texto da mensagem
+      div.className = 'message ' + type;  // Adiciona classes CSS
+
+      // Se for mensagem do bot, converte quebras de linha para tags <br>
+      if (type === 'bot') { 
+        div.innerHTML = text.replace(/\n/g, "<br>"); // quebra linha só nas mensagens do bot
+      } else {
+        div.textContent = text; // Mensagens do usuário usam textContent para segurança
+      }
+
+      // Adiciona a mensagem ao container e o container à área de mensagens
+      container.appendChild(div);
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight; // Rola automaticamente para a última mensagem
+    }
+
+    /* Função da Lógica principal do bot - responde às mensagens do usuário */
+    function responder(msg) {
+      msg = msg.toLowerCase();  // Converte a mensagem para minúsculas para facilitar a comparação
+
+      if (msg.includes("obrigado") || msg.includes("obrigada")) {
+    return "Por nada, estou aqui para te auxiliar. Não hesite em me chamar ao precisar tirar dúvidas. A dúvida é o princípio da sabedoria. 🌟😊 Tenha um ótimo dia!.";
+  }
+
+
+      // Respostas fixas para mensagens específicas
+      const respostasFixas = {  
+        "sair": "Até logo! Estarei aqui se precisar.",
+      };
+
+      // Se a mensagem corresponder a uma resposta fixa, retorna ela
+      if (respostasFixas[msg]) {
+        return respostasFixas[msg];
+        
+      }
+
+      if (msg.includes("clima")) {
+        const apiKey = "a3dc0b30329819faf1d5392355fe16ed"
+        const cidade = "Capinzal"
+
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&lang=pt_br&units=metric`)
+        .then(response => response.json())
+        .then(data => {
+          const temperatura = data.main.temp;
+          const descricao = data.weather[0].description;
+
+          addMessage(`O clima em ${cidade} está ${descricao} com temperatura de ${temperatura}°C.`, "bot");
+        })
+        .catch (error => {
+          console.log("Erro ao obter o clima:", "bot");
+          addMessage("Não foi possível obter o clima no momento.", "bot");
+        })
+      }
+
+      // Se a mensagem incluir hora
+      if (msg.includes("hora")) {
+        const agora = new Date();
+        return `Agora são ${agora.getHours()}h${agora.getMinutes().toString().padStart(2, '0')}m`;
+      }
+
+       // Se a mensagem for "Oi", mostra o menu inicial
+if (msg.toLowerCase() === "oi" || msg.toLowerCase() === "olá") {
+  // Primeiro, envia a mensagem de saudação
+  addMessage("Oi de novo!😊 Como posso te ajudar agora?", "bot");
+
+  // Agora, exibe o menu de opções
+  setTimeout(() => mostrarBotoes(), 500);  // Delay de 500ms para dar tempo de exibir a mensagem primeiro
+  return;  // Não retorna texto diretamente, pois a mensagem já foi adicionada com addMessage
+}
+    
+      // Se a mensagem incluir "motivações", exibe uma frase motivacional aleatória
+if (msg.includes("motivações") || msg.includes("motivação")) {
+  const motivacoes = [
+    "💡 Não importa quão lento você vá, desde que você não pare.",
+    "🚀 O sucesso é a soma de pequenos esforços repetidos diariamente.",
+    "🔥 Você é mais forte do que imagina. Continue em frente!",
+    "🌱 Grandes realizações levam tempo. Seja paciente e persistente.",
+    "🎯 Foque no progresso, não na perfeição.",
+    "💪 Cada desafio superado é um passo a mais rumo ao seu objetivo.",
+    "📈 O esforço de hoje é a conquista de amanhã.",
+    "🌟 Acredite no seu potencial e tudo será possível.",
+    "⏳ Não desista. As grandes mudanças exigem tempo e coragem.",
+    "🏁 O importante não é onde você está agora, mas onde quer chegar."
+  ];
+  return motivacoes[Math.floor(Math.random() * motivacoes.length)];
+}
+
+
+
+      // Resposta padrão caso não entenda a mensagem
+      return "Desculpe, não entendi. Tente perguntar sobre o clima, horário ou peça uma frase de motivação.";
+    }
+
+    /* Função que Mostra botões Inicio */
+    function mostrarBotoes() {
+      const messagesDiv = document.getElementById("messages");
+
+     // Botões de opções do menu inicial
+const opcoes = [
+  { 
+    texto: "🚨Consultar atividades pendentes", 
+    resposta: "<strong>14/05:</strong> Projeto da Cecília.<br><strong>12/04:</strong> Projeto do João.<br><br>Quer mais detalhes?" 
+  },
+  { 
+    texto: "🗒️Reuniões marcadas para hoje", 
+    resposta: "Você tem uma reunião agendada para <strong>hoje</strong>.<br><br>Quer saber o horário?" 
+  },
+  {
+    texto: "📅Dias restantes para o projeto da Cecilia", 
+    resposta: "O prazo final está se aproximando.<br><br>Quer saber <strong>quantos dias faltam?</strong>" 
+  },
+  { 
+    texto: "🚧Problemas relatados na obra da BRF", 
+    resposta: "Foram registradas <strong>ocorrências na obra da BRF</strong>.<br><br>Quer ver os detalhes?" 
+  },
+  { 
+    texto: "✅Responsável pela última aprovação do seu projeto", 
+    resposta: "A última alteração foi <strong>aprovada recentemente</strong>.<br><br>Quer saber quem aprovou?" 
+  },
+  {   
+    texto: "📊Progresso rumo a meta mensal", 
+    resposta: "Seus <strong>resultados</strong> estão sendo acompanhados.<br><br>Quer saber o progresso atual?" 
+  },
+  {   
+    texto: "⏰ Meta Mais Urgente Agora", 
+    resposta: "Há uma <strong>meta em destaque</strong> neste momento.<br><br>Quer saber qual é?" 
+  },
+  {
+    texto: "⏳Possibilidade de incluir jovem aprendiz no setor", 
+    resposta: "Há possibilidade de incluir um <strong>jovem aprendiz</strong> no setor.<br><br>Quer que eu veja os requisitos ou inicie o processo?" 
+  },
+];
+
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+        
+          
+          addMessage(opcao.resposta, "bot");
+          container.remove();
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+
+// Botão para sim
+const SimBtn = document.createElement("button");
+SimBtn.className = "opcao-btn";
+SimBtn.style.marginTop = "10px";
+SimBtn.textContent = "Sim";
+SimBtn.onclick = () => {
+  addMessage("Sim", "user");
+
+  let respostaSim = "";
+
+  switch (opcao.texto) {
+  case "🚨Consultar atividades pendentes":
+    respostaSim = "<strong>Projeto do João:</strong> Revisar apresentação e enviar feedback até sexta.<br><br><strong>Projeto da Cecília:</strong> Finalizar relatório e anexar documentos no sistema até amanhã.<br><br>Caso precisar consultar outras informações basta me mandar um oi🤗! estarei sempre a disposição, espero ter ajudado!!.";
+    break;
+  case "🗒️Reuniões marcadas para hoje":
+    respostaSim = "🕒 <strong>A reunião está marcada para às 14h, na sala 3.</strong><br><br>Caso precisar consultar outras informações basta me mandar um oi🤗! estarei sempre a disposição, espero ter ajudado!!.";
+    break;
+  case "📅Dias restantes para o projeto da Cecilia":
+    respostaSim = "⏳ <strong>Faltam 5 dias</strong> para a entrega do Projeto da Cecília.<br><br>Caso precisar consultar outras informações basta me mandar um oi🤗! estarei sempre a disposição, espero ter ajudado!!.";
+    break;
+  case "🚧Problemas relatados na obra da BRF":
+    respostaSim = "🚧 <strong>Houve atraso</strong> na entrega de materiais e revisão no cronograma.<br><br>Caso precisar consultar outras informações basta me mandar um oi🤗! estarei sempre a disposição, espero ter ajudado!!.";
+    break;
+  case "✅Responsável pela última aprovação do seu projeto":
+    respostaSim = "✅ <strong>Foi aprovada por Ana Cláudia</strong>, da equipe técnica.<br><br>Caso precisar consultar outras informações basta me mandar um oi🤗! estarei sempre a disposição, espero ter ajudado!!.";
+    break;
+  case "📊Progresso rumo a meta mensal":
+    respostaSim = "📈 <strong>Você já cumpriu 72%</strong> da meta mensal.<br><br>Caso precisar consultar outras informações basta me mandar um oi🤗! estarei sempre a disposição, espero ter ajudado!!.";
+    break;
+  case "⏰ Meta Mais Urgente Agora":
+    respostaSim = "📌 <strong>A meta mais urgente agora</strong> é a entrega da proposta final do Projeto João até amanhã.<br><br>Caso precisar consultar outras informações basta me mandar um oi🤗! estarei sempre a disposição, espero ter ajudado!!.";
+    break;
+  case "⏳Possibilidade de incluir jovem aprendiz no setor":
+    respostaSim = "👨‍🎓 <strong>Vou buscar os requisitos</strong> e candidatos disponíveis.<br><br>Caso precisar consultar outras informações basta me mandar um oi🤗! estarei sempre a disposição, espero ter ajudado!!.";
+    break;
+  default:
+    respostaSim = "👍 <strong>Certo! Obrigado por confirmar.</strong>";
+}
+
+  addMessage(respostaSim, "bot");
+  novoContainer.remove();
+};
+          // Botão para não
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+  novoContainer.remove();
+  addMessage("Por nada, espero ter ajudado!! 🤗<br>Lembre-se... sempre que precisar estarei à disposição, basta me enviar um oi.<br><br>✨ Tenha um ótimo dia!", "bot");
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          novoContainer.appendChild(SimBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+      
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    /* Função que Mostra botões com opções de benefícios */
+    function mostrarBotoesMaisOpcoes() {
+      const messagesDiv = document.getElementById("messages");
+
+      
+ 
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+
+          
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.texto === "❌ Nada, obrigado") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+          addMessage(opcao.resposta, "bot");
+          container.remove();
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          // Botão para encerrar
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+      
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Permite enviar mensagem pressionando Enter
+    document.getElementById("userInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Evita o comportamento padrão do Enter
+        sendMessage();  // Chama a função de enviar mensagem
+      }
+    });
+
+    function addMessage(text, type) {
+  const messagesDiv = document.getElementById('messages');
+
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.alignItems = 'flex-end';
+  container.style.marginBottom = '10px';
+  container.style.justifyContent = type === 'user' ? 'flex-end' : 'flex-start';
+
+  // Adiciona a imagem de perfil
+  const img = document.createElement('img');
+  img.src = type === 'user' 
+    ? 'user.png' 
+    : 'ted.png'; 
+  img.style.width = '35px';
+  img.style.height = '35px';
+  img.style.borderRadius = '50%';
+  img.style.margin = type === 'user' ? '0 0 0 8px' : '0 8px 0 0';
+
+  const div = document.createElement('div');
+  div.className = 'message ' + type;
+
+  if (type === 'bot') {
+    div.innerHTML = text.replace(/\n/g, "<br>");
+  } else {
+    div.textContent = text;
+  }
+
+  if (type === 'user') {
+    container.appendChild(div);
+    container.appendChild(img);
+  } else {
+    container.appendChild(img);
+    container.appendChild(div);
+  }
+
+  messagesDiv.appendChild(container);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+  </script>
+</body>
+</html>

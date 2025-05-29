@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Emoji de diamanete Diamond Bot</title>
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <style> /*-- Início da seção de estilos CSS */
+
+    /* Estilo geral do corpo da página */
+    body {  
+      font-family: 'Segoe UI', sans-serif;  /* Define a fonte padrão */
+      background: linear-gradient(to right, #fdf39c, #f2d673);  /* Fundo com gradiente azul */
+      margin: 0;  /* Remove margens padrão */
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Estilo do container principal do chat */
+    #chat {
+      width: 600px;  /* Largura fixa */
+      height: 700px;  /* Altura fixa */
+      max-height: 90vh;  /* Altura máxima de 90% da tela */
+      background: #fff;  /* Fundo branco */
+      border-radius: 12px;  /* Bordas arredondadas */
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);  /* Sombra suave */
+      display: flex;  /* Usa flexbox para organizar os elementos internos */
+      flex-direction: column;  /* Organiza os filhos em coluna */
+      overflow: hidden;  /* Esconde qualquer conteúdo que ultrapasse */
+    }
+
+    /* Estilo do cabeçalho do chat */
+    #header {
+      background: #334194;  /* Cor de fundo azul */
+      color: white;  /* Texto branco */
+      padding: 15px;  /* Espaçamento interno */
+      font-weight: bold;  /* Texto em negrito */
+      font-size: 18px;  /* Tamanho da fonte */
+    }
+
+    /* Área onde as mensagens são exibidas */
+    #messages {
+      flex: 1;  /* Ocupa todo o espaço disponível */
+      padding: 15px;  /* Espaçamento interno */
+      overflow-y: auto;  /* Habilita scroll vertical se necessário */
+      background: #f9f9f9;  /* Cor de fundo cinza claro */
+    }
+
+    /* Estilo base para todas as mensagens */
+    .message {
+      margin: 10px 0;  /* Espaçamento externo */
+      max-width: 80%;  /* Largura máxima */
+      padding: 10px 15px;  /* Espaçamento interno */
+      border-radius: 20px;  /* Bordas arredondadas */
+      line-height: 1.3;  /* Espaçamento entre linhas */
+      word-wrap: break-word;  /* Quebra palavras longas */
+      display: inline-block;  /* Permite que a largura se ajuste ao conteúdo */
+    }
+
+    /* Estilo específico para mensagens do bot */
+    .bot {
+      background: #e0f7fa;  /* Cor de fundo azul claro */
+      color: #334194;  /* Cor do texto azul escuro */
+      align-self: flex-start;  /* Alinha à esquerda */
+      border-bottom-left-radius: 0;  /* Remove arredondamento no canto inferior esquerdo */
+    }
+
+
+    /* Estilo específico para mensagens do usuário */
+    .user {
+      background: #334194;  /* Cor de fundo verde claro */
+      color: #ffffff;  /* Cor do texto verde escuro */
+      align-self: flex-end;  /* Alinha à direita */
+      border-bottom-right-radius: 0;  /* Remove arredondamento no canto inferior direito */
+      text-align: right;  /* Alinha o texto à direita */
+    }
+
+    /* Área de entrada de texto */
+    #input-area {
+      display: flex;  /* Organiza os elementos filhos em linha */
+      border-top: 1px solid #ddd;  /* Linha divisória no topo */
+    }
+
+    /* Campo de entrada de texto */
+    #userInput {
+      flex: 1;  /* Ocupa todo o espaço disponível */
+      border: none;  /* Remove borda */
+      padding: 15px;  /* Espaçamento interno */
+      font-size: 16px;  /* Tamanho da fonte */
+      outline: none;  /* Remove contorno ao focar */
+    }
+
+    /* Estilo do botão de enviar */
+    button {
+      background: #334194;  /* Cor de fundo azul */
+      color: white;  /* Texto branco */
+      border: none;  /* Remove borda */
+      padding: 15px 20px;  /* Espaçamento interno */
+      font-size: 16px;  /* Tamanho da fonte */
+      cursor: pointer;  /* Muda cursor para pointer ao passar o mouse */
+      transition: 0.3s;  /* Suaviza transições de estado */
+    }
+
+    /* Efeito hover no botão */
+    button:hover {
+      background: #2a3f6b;  /* Cor mais escura ao passar o mouse */
+    }
+
+    /* Estilo dos botões de opção */
+    .opcao-btn {
+      background: #f1f8e9;  /* Cor de fundo verde muito claro */
+      color: #33691e;  /* Cor do texto verde escuro */
+      border-radius: 20px;  /* Bordas arredondadas */
+      padding: 10px 15px;  /* Espaçamento interno */
+      border: none;  /* Remove borda */
+      cursor: pointer;  /* Muda cursor para pointer */
+      font-weight: bold;  /* Texto em negrito */
+      margin-top: 10px;  /* Espaçamento superior */
+    }
+
+    /* Efeito hover nos botões de opção */
+    .opcao-btn:hover {
+      background: #c8d4e6;  /* Cor de fundo mais escura ao passar o mouse */
+    }
+  </style>
+</head>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <h1>Portal de Chatbots</h1>
+            <nav>
+            <a href="../index.html">Início</a>
+            <a href="../chat1_teddybot/index.html">Teddy Bot</a>
+            <a href="../chat2_milkbot/index.html">Milk Bot</a>
+            <a href="../chat3/index.html">Diamond Bot</a>
+            <a href="../chat4/index.html">Chat 4 - Sem nome</a>
+            <a href="../chat5-hortilar bot/hortlar.html">HortLar Bot</a>
+            </nav>
+        </div>
+    </header>
+  <script src="../assets/js/header.js"></script>
+
+  <main>
+    <!-- Container principal do chat -->
+    <div id="chat">
+      <!-- Cabeçalho com nome do bot -->
+      <div id="header">💎 Chat Bot</div>
+      
+      <!-- Área de mensagens (contém a mensagem inicial do bot) -->
+      <div id="messages">
+        <div class="message bot">Olá! Como posso te ajudar?</div>
+      </div>
+      
+      <!-- Área de entrada de mensagens -->
+      <div id="input-area">
+        <!-- Campo de texto para o usuário digitar -->
+        <input type="text" id="userInput" placeholder="Digite aqui...">
+        <!-- Botão para enviar a mensagem -->
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- Início da seção de JavaScript -->
+  <script>
+
+     /* Função para enviar mensagem do usuário e obter resposta do bot */
+    function sendMessage() {
+      const input = document.getElementById('userInput'); // Obtém o elemento de entrada de texto
+      const msg = input.value.trim(); // Remove espaços em branco no início/fim e armazena a mensagem
+
+      if (msg === "") return; // Se a mensagem estiver vazia, não faz nada
+
+      addMessage(msg, "user");  // Adiciona a mensagem do usuário ao chat
+      input.value = ""; // Limpa o campo de entrada
+
+      const resposta = responder(msg);  // Obtém a resposta do bot para a mensagem do usuário
+      setTimeout(() => addMessage(resposta, "bot"), 500); // Adiciona a resposta do bot após um pequeno atraso (500ms)
+    }
+
+    /* Função que adiciona uma mensagem ao chat */
+    function addMessage(text, type) {
+      const messagesDiv = document.getElementById('messages');  // Obtém a div que contém todas as mensagens
+
+      const container = document.createElement('div');  // Cria um container para a mensagem (para controlar o alinhamento)
+      container.style.display = 'flex';
+      container.style.justifyContent = type === 'user' ? 'flex-end' :  'flex-start';  // Alinha à direita para mensagens do usuário, esquerda para o bot
+
+      const div = document.createElement('div');  // Cria a div que vai conter o texto da mensagem
+      div.className = 'message ' + type;  // Adiciona classes CSS
+
+      // Se for mensagem do bot, converte quebras de linha para tags <br>
+      if (type === 'bot') { 
+        div.innerHTML = text.replace(/\n/g, "<br>"); // quebra linha só nas mensagens do bot
+      } else {
+        div.textContent = text; // Mensagens do usuário usam textContent para segurança
+      }
+
+      // Adiciona a mensagem ao container e o container à área de mensagens
+      container.appendChild(div);
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight; // Rola automaticamente para a última mensagem
+    }
+
+    /* Função da Lógica principal do bot - responde às mensagens do usuário */
+    function responder(msg) {
+      msg = msg.toLowerCase();  // Converte a mensagem para minúsculas para facilitar a comparação
+
+      // Se a mensagem incluir hora
+      if (msg.includes("hora")) {
+        const agora = new Date();
+        return `Agora são ${agora.getHours()}h${agora.getMinutes().toString().padStart(2, '0')}m`;
+      }
+
+      // Se a mensagem incluir dia
+      if (msg.includes("dia") && msg.includes("hoje")) {
+        const agora = new Date();
+        const diasSemana = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
+        const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+        const diaSemana = diasSemana[agora.getDay()];
+        const dia = agora.getDate();
+        const mes = meses[agora.getMonth()];
+        const ano = agora.getFullYear();
+
+        return `Hoje é ${diaSemana}, ${dia} de ${mes} de ${ano}.`;
+      }
+
+      const respostasFixas01 = {  
+        "bom dia": "bom dia! como você esta?",
+        "boa tarde": "boa tarde! como você esta?",
+        "boa noite": "boa noite! como você esta?",
+      };
+
+      if (respostasFixas01[msg]) {
+        return respostasFixas01[msg];
+      }
+
+      const respostasFixas02 = {  
+        "oi": "oi, tudo certo?",
+        "oie": "oi, tudo certo?",
+        "opa": "oi, tudo certo?",
+        "oii": "oi, tudo certo?",
+        "olá": "oi, tudo certo?",
+        "ola": "oi, tudo certo?",
+      };
+
+      if (respostasFixas02[msg]){
+        return respostasFixas02[msg];
+      }
+
+      const respostasFixas03 = {
+        "tudo certo, e com você?": "estou bem também, oque você deseja?",
+        "tudo certo, e com você": "estou bem também, oque você deseja?",
+        "tudo bem, e com você?": "estou bem também, oque você deseja?",
+        "tudo bem, e com você": "estou bem também, oque você deseja?",
+      };
+
+      if (respostasFixas03[msg]) {
+        return respostasFixas03[msg];
+      }
+
+    // Perguntas do usuário e respostas do ChatBot
+      if (msg.includes("estoque") && msg.includes("sérum") && msg.includes("facial")) {
+        return `Temos 10 unidads do sérum facial.`
+      }
+
+      if (msg.includes("vendidos") && msg.includes("ultima") && msg.includes("semana") && msg.includes("produtos")) {
+        return `Hidratante lábial, máscara anti rugas e protetor solar FPS80.`
+      }
+
+      if (msg.includes("entregas") && msg.includes("fornecedores") && msg.includes("atraso")) {
+        return `Não, todos os fornecedors estão entregando no prazo.`
+      }
+
+      if (msg.includes("promoção") && msg.includes("estoque") && msg.includes("produtos") && msg.includes("girar")) {
+        return `Sugiro perfumes femininos e sombras unitárias`
+      }
+
+      if (msg.includes("venda") && msg.includes("campanha") && msg.includes("marketing")) {
+        return `A base Glow teve um aumento de 35%.`
+      }
+
+      if (msg.includes("clientes") && msg.includes("pedindo") && msg.includes("estoque")) {
+        return `Sim, tivemos pedido de água micelar.`
+      }
+
+      if (msg.includes("proximo") && msg.includes("vencimento")) {
+        return `Sim, os hidratantes corporais estão com vencimento para os próximos 6 meses.`
+      }
+
+      if (msg.includes("pedido") && msg.includes("mascaras") && msg.includes("cilios")) {
+        return `Sim, foi confirmado ontem, com previsão para chegar na próxima semana.`
+      }
+
+      if (msg.includes("batons") && msg.includes("remessa") && msg.includes("matte")) {
+        return `O pedido já foi enviado e tem previsão de chegada em 3 dias.`
+      }
+
+      if (msg.includes("categoria") && msg.includes("baixa") && msg.includes("saida")) {
+        return `Sim, as máscaras de remover cravos estão com baixa saída.`
+      }
+
+    // Respostas do usuário e do ChatBot
+      if (msg.includes("ultima") && msg.includes("compra") && msg.includes("quando")) {
+        return `Ultima reposição 23/03/2025`
+      }
+
+      if (msg.includes("ok") && msg.includes("obrigado") && msg.includes("obrigada")) {
+        return `Se precisar de mais detalhes me avise`
+      }
+
+      if (msg.includes("ótimo") && msg.includes("obrigado") && msg.includes("obrigado")) {
+        return `Se precisar de mais detalhes me avise`
+      }
+
+      if (msg.includes("calcule") && msg.includes("possivel") && msg.includes("valor") && msg.includes("oferta")) {
+        return `▪️ Sombra: R$22,90
+        ▪️ Perfume: R$160,00`
+      }
+
+      if (msg.includes("aumento") && msg.includes("impulsionado") && msg.includes("redes") && msg.includes("socias")) {
+        return `A maior parte veio do site e do instagram.`
+      }
+
+      if (msg.includes("identifique") && msg.includes("marca") && msg.includes("especifico")) {
+        return `Água micelar da BioDerma que remove maquiagem.`
+      }
+
+      if (msg.includes("fazer") && msg.includes("relação") && msg.includes("isso")) {
+        return `Podemos criar uma oferta para o dia das mães`
+      }
+
+      if (msg.includes("fornecedor") && msg.includes("mensionou") && msg.includes("versões")) {
+        return `Sim, todas as versões foram confirmadas.`
+      }
+
+      if (msg.includes("risco") && msg.includes("atraso") && msg.includes("entrega") && msg.includes("prazo")) {
+        return `O fornecedor alertou que pode haver atraso de 2 dias.`
+      }
+
+      if (msg.includes("motivo") && msg.includes("baixa") && msg.includes("saida") && msg.includes("mascaras")) {
+        return `A análise indica que há pouca divulgação.`
+      }
+
+      return `Não entendi o que foi dito`
+    };
+      
+    /* Função que Mostra botões com opções de benefícios */
+    function mostrarBotoesMaisOpcoes() {
+      const messagesDiv = document.getElementById("messages");
+
+      // Botões de opções de benefícios
+      const opcoes = [
+        { 
+          texto: "", 
+          resposta: "" },
+        { 
+          texto: "", 
+          resposta: "" },
+        { 
+          texto: "", 
+          resposta: "" },
+        { 
+          texto: "", 
+          resposta: ""},
+        { 
+          texto: "", 
+          resposta: ""},
+        { 
+          texto: "", 
+          resposta: "" }
+      ];
+      
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+          
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.texto === "❌ Ok") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+          addMessage(opcao.resposta, "bot");
+          container.remove();
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          // Botão para ver outras opções
+          const repetirBtn = document.createElement("button");
+          repetirBtn.className = "opcao-btn";
+          repetirBtn.style.marginTop = "10px";
+          repetirBtn.textContent = "🔁 Ver outros benefícios";
+          repetirBtn.onclick = () => {
+            addMessage("Ver outros benefícios", "user");
+            novoContainer.remove();
+            mostrarBotoesMaisOpcoes(); // Mostra os botões novamente
+          };
+          
+          // Botão para encerrar
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Ok";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+      
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Permite enviar mensagem pressionando Enter
+    document.getElementById("userInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Evita o comportamento padrão do Enter
+        sendMessage();  // Chama a função de enviar mensagem
+      }
+    });
+  </script>
+</body>
+</html>

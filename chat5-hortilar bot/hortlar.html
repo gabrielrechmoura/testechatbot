@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>RHBot - Chat</title>
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <style> /*-- Início da seção de estilos CSS */
+
+    /* Estilo geral do corpo da página */
+    body {  
+      font-family: 'Segoe UI', sans-serif;  /* Define a fonte padrão */
+      background: linear-gradient(to right, #2f4b3f, #17a374);  /* Fundo com gradiente azul */
+      margin: 0;  /* Remove margens padrão */
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Estilo do container principal do chat */
+    #chat {
+      width: 600px;  /* Largura fixa */
+      height: 700px;  /* Altura fixa */
+      max-height: 90vh;  /* Altura máxima de 90% da tela */
+      background: #f2e8e8;  /* Fundo branco */
+      border-radius: 12px;  /* Bordas arredondadas */
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);  /* Sombra suave */
+      display: flex;  /* Usa flexbox para organizar os elementos internos */
+      flex-direction: column;  /* Organiza os filhos em coluna */
+      overflow: hidden;  /* Esconde qualquer conteúdo que ultrapasse */
+    }
+
+    /* Estilo do cabeçalho do chat */
+    #header {
+      background: #438c79;  /* Cor de fundo azul */
+      color: rgb(197, 242, 205);  /* Texto branco */
+      padding: 15px;  /* Espaçamento interno */
+      font-weight: bold;  /* Texto em negrito */
+      font-size: 25px;  /* Tamanho da fonte */
+      text-align: center;
+    }
+
+    #header:hover {
+     color: #36784c;  /* Cor mais escura ao passar o mouse */
+    }
+
+    /* Área onde as mensagens são exibidas */
+    #messages {
+      flex: 1;  /* Ocupa todo o espaço disponível */
+      padding: 15px;  /* Espaçamento interno */
+      overflow-y: auto;  /* Habilita scroll vertical se necessário */
+      background: #f9f9f9;  /* Cor de fundo cinza claro */
+    }
+
+    /* Estilo base para todas as mensagens */
+    .message {
+      margin: 10px 0;  /* Espaçamento externo */
+      max-width: 80%;  /* Largura máxima */
+      padding: 10px 15px;  /* Espaçamento interno */
+      border-radius: 20px;  /* Bordas arredondadas */
+      line-height: 1.3;  /* Espaçamento entre linhas */
+      word-wrap: break-word;  /* Quebra palavras longas */
+      display: inline-block;  /* Permite que a largura se ajuste ao conteúdo */
+    }
+
+    /* Estilo específico para mensagens do bot */
+    .bot {
+      background: #e0f7fa;  /* Cor de fundo azul claro */
+      color: #006064;  /* Cor do texto azul escuro */
+      align-self: flex-start;  /* Alinha à esquerda */
+      border-bottom-left-radius: 0;  /* Remove arredondamento no canto inferior esquerdo */
+    }
+
+
+    /* Estilo específico para mensagens do usuário */
+    .user {
+      background: #dcedc8;  /* Cor de fundo verde claro */
+      color: #33691e;  /* Cor do texto verde escuro */
+      align-self: flex-end;  /* Alinha à direita */
+      border-bottom-right-radius: 0;  /* Remove arredondamento no canto inferior direito */
+      text-align: right;  /* Alinha o texto à direita */
+    }
+
+    /* Área de entrada de texto */
+    #input-area {
+      display: flex;  /* Organiza os elementos filhos em linha */
+      border-top: 1px solid #ddd;  /* Linha divisória no topo */
+    }
+
+    /* Campo de entrada de texto */
+    #userInput {
+      flex: 1;  /* Ocupa todo o espaço disponível */
+      border: none;  /* Remove borda */
+      padding: 15px;  /* Espaçamento interno */
+      font-size: 16px;  /* Tamanho da fonte */
+      outline: none;  /* Remove contorno ao focar */
+    }
+
+    /* Estilo do botão de enviar */
+    button {
+      background: #05583f;  /* Cor de fundo azul */
+      color: rgb(255, 255, 255);  /* Texto branco */
+      border: none;  /* Remove borda */
+      padding: 15px 20px;  /* Espaçamento interno */
+      font-size: 16px;  /* Tamanho da fonte */
+      cursor: pointer;  /* Muda cursor para pointer ao passar o mouse */
+      transition: 0.3s;  /* Suaviza transições de estado */
+    }
+
+    /* Efeito hover no botão */
+    button:hover {
+      background: #36784c;  /* Cor mais escura ao passar o mouse */
+    }
+
+    /* Estilo dos botões de opção */
+    .opcao-btn {
+      background: #f1f8e9;  /* Cor de fundo verde muito claro */
+      color: #33691e;  /* Cor do texto verde escuro */
+      border-radius: 20px;  /* Bordas arredondadas */
+      padding: 10px 15px;  /* Espaçamento interno */
+      border: none;  /* Remove borda */
+      cursor: pointer;  /* Muda cursor para pointer */
+      font-weight: bold;  /* Texto em negrito */
+      margin-top: 10px;  /* Espaçamento superior */
+    }
+
+    /* Efeito hover nos botões de opção */
+    .opcao-btn:hover {
+      background: #c8e6c9;  /* Cor de fundo mais escura ao passar o mouse */
+    }
+
+
+  </style>
+</head>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <h1>Portal de Chatbots</h1>
+            <nav>
+            <a href="../index.html">Início</a>
+            <a href="../chat1_teddybot/index.html">Teddy Bot</a>
+            <a href="../chat2_milkbot/index.html">Milk Bot</a>
+            <a href="../chat3/index.html">Diamond Bot</a>
+            <a href="../chat4/index.html">Chat 4 - Sem nome</a>
+            <a href="../chat5-hortilar bot/hortlar.html">HortLar Bot</a>
+            </nav>
+        </div>
+    </header>
+  <script src="../assets/js/header.js"></script>
+
+
+  <main>
+    <!-- Container principal do chat -->
+    <div id="chat">
+      <!-- Cabeçalho com nome do bot -->
+      <div id="header">🍉HortLar 🍖</div>
+      
+      <!-- Área de mensagens (contém a mensagem inicial do bot) -->
+      <div id="messages">
+        <div class="message bot">Boa dia, senhor Claudemir Schneider! O que posso te ajudar hoje?</div>
+      </div>
+      
+      <!-- Área de entrada de mensagens -->
+      <div id="input-area">
+        <!-- Campo de texto para o usuário digitar -->
+        <input type="text" id="userInput" placeholder="Digite aqui...">
+        <!-- Botão para enviar a mensagem -->
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+    </div>
+  </main>
+  <!-- Início da seção de JavaScript -->
+  <script>
+
+     /* Função para enviar mensagem do usuário e obter resposta do bot */
+    function sendMessage() {
+      const input = document.getElementById('userInput'); // Obtém o elemento de entrada de texto
+      const msg = input.value.trim(); // Remove espaços em branco no início/fim e armazena a mensagem
+
+      if (msg === "") return; // Se a mensagem estiver vazia, não faz nada
+
+      addMessage(msg, "user");  // Adiciona a mensagem do usuário ao chat
+      input.value = ""; // Limpa o campo de entrada
+
+      const resposta = responder(msg);  // Obtém a resposta do bot para a mensagem do usuário
+      setTimeout(() => addMessage(resposta, "bot"), 500); // Adiciona a resposta do bot após um pequeno atraso (500ms)
+    }
+
+    /* Função que adiciona uma mensagem ao chat */
+    function addMessage(text, type) {
+      const messagesDiv = document.getElementById('messages');  // Obtém a div que contém todas as mensagens
+
+      const container = document.createElement('div');  // Cria um container para a mensagem (para controlar o alinhamento)
+      container.style.display = 'flex';
+      container.style.justifyContent = type === 'user' ? 'flex-end' :  'flex-start';  // Alinha à direita para mensagens do usuário, esquerda para o bot
+
+      const div = document.createElement('div');  // Cria a div que vai conter o texto da mensagem
+      div.className = 'message ' + type;  // Adiciona classes CSS
+
+      // Se for mensagem do bot, converte quebras de linha para tags <br>
+      if (type === 'bot') { 
+        div.innerHTML = text.replace(/\n/g, "<br>"); // quebra linha só nas mensagens do bot
+      } else {
+        div.textContent = text; // Mensagens do usuário usam textContent para segurança
+      }
+
+      // Adiciona a mensagem ao container e o container à área de mensagens
+      container.appendChild(div);
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight; // Rola automaticamente para a última mensagem
+    }
+
+    /* Função da Lógica principal do bot - responde às mensagens do usuário */
+    function responder(msg) {
+      msg = msg.toLowerCase();  // Converte a mensagem para minúsculas para facilitar a comparação
+
+      // Respostas fixas para mensagens específicas
+      const respostasFixas = {  
+        "motivação": "Acredite em você! O esforço de hoje é o sucesso de amanhã.",
+        "clima": "Ainda não posso ver o clima real, mas espero que esteja ensolarado!",
+        "sair": "Até logo! Estarei aqui se precisar.",
+      };
+
+      // Se a mensagem corresponder a uma resposta fixa, retorna ela
+      if (respostasFixas[msg]) {
+        return respostasFixas[msg];
+      }
+
+      // Se a mensagem incluir hora
+      if (msg.includes("hora")) {
+        const agora = new Date();
+        return `Agora são ${agora.getHours()}h${agora.getMinutes().toString().padStart(2, '0')}m`;
+      }
+
+      // Verifica se a mensagem contém palavras relacionadas a benefícios
+      if (msg.includes("menu") || msg.includes("menus")) {
+        setTimeout(() => mostrarBotoesMaisOpcoes(), 1000); 
+        return "Aqui está o seu <strong> menu </strong>, por onde vamos começar? "; 
+      }
+///////////////////////////////////////////////////////////////////////////////////////////IFS DA ANA
+
+      if (msg.includes("estoque mercado") || msg.includes("mercado") || msg.includes("estoques") || msg.includes("estoque")) {
+        return `AQUI ESTÁ O ESTOQUE DO MÊS ATUAL:
+          \n - PADARIA:
+          \n🔸PAO FRANCES = 25 UN.
+          \n🔸BAGUETTE = 92 UN.
+          \n🔸PÃO DE FORMA = 38 UN.
+          \n🔸PAO INTEGRAL = 24 UN.
+          \n🔸BISCOITO RECHEADO = 19 UN.
+          \n🔸BISCOITO CASEIRO = 34 UN.
+          \n__________________________________________________________________________________________
+          \n - AÇOUGUE:
+          \n🔸CARNE BOVINA = 1,5 kg
+          \n🔸CARNE SUÍNA = 1 kg
+          \n🔸CARNE BRANCA = 1,5 kg \n
+        \nObrigada por conferir o estoque desse mês!`
+      }
+
+
+      if (msg.includes("agenda") || msg.includes("agendas")) {
+        return `AQUI ESTÁ O AGENDA DO MÊS DE JUNHO:
+
+          \n🔸DOMINGO 01/06/2025:  Supervisão leve, checagem de abertura de mês e plantão.
+          \n🔸SEGUNDA - FEIRA 02/06/2025: Atividade de Gestão: Desenvolvimento de plano de Marketing
+          \n🔸TERÇA - FEIRA 03/06/2025: Evento de Festa Junina.
+          \n🔸QUARTA - FEIRA 04/06/2025: Conferência Anual de Revisão de Vendas.
+          \n🔸QUINTA - FEIRA 05/06/2025: Acompanhamento da produção de itens típicos na padaria.
+          \n🔸SEXTA - FEIRA 06/06/2025: Checagem de promoções do fim de semana e reforço no estoque.
+          \n🔸SÁBADO 07/06/2025: Rotina reduzida, foco em supervisão geral.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 09/06/2025: Reunião mensal com líderes de setor.
+          \n🔸TERÇA - FEIRA 10/06/2025: Verificação da higiene e limpeza de câmaras frias (açougue, hortifruti)
+          \n🔸QUARTA - FEIRA 11/06/2025: Treinamento rápido com equipe da padaria sobre boas práticas.
+          \n🔸QUINTA - FEIRA 12/06/2025: Programação de compras de reposição de hortifrúti do fim de semana.
+          \n🔸SEXTA - FEIRA 13/06/2025: Reunião com setor de hortifrúti - verificação de sazonalidade.
+          \n🔸SÁBADO 14/06/2025: Avaliação do desempenho de vendas da semana.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 16/06/2025: Acompanhamento de metas de produtividade e vendas.
+          \n🔸TERÇA - FEIRA 17/06/2025: Reunião com fornecedores de hortifrúti para novos produtos da estação.
+          \n🔸QUARTA - FEIRA 18/06/2025: Conferência de perecíveis e validade do estoque do açougue e padaria.
+          \n🔸QUINTA - FEIRA 19/06/2025: Feriado - Corpus Christi.
+          \n🔸SEXTA - FEIRA 20/06/2025: Avaliação de desempenho individual dos funcionários.
+          \n🔸SÁBADO 21/06/2025: Atualização de preços conforme nova tabela de fornecedores.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 23/06/2025: Conferência de recebimento de mercadorias; alinhamento com fornecedores.
+          \n🔸TERÇA - FEIRA 24/06/2025: Checagem de limpeza de câmaras frias; ronda sanitária geral.  
+          \n🔸QUARTA - FEIRA 25/06/2025: Supervisão de vendas e fluxo de clientes; avaliação de atendimento.
+          \n🔸QUINTA - FEIRA 26/06/2025: Início do fechamento mensal: consolidação de relatórios.
+          \n🔸SEXTA - FEIRA 27/06/2025: Avaliação das vendas da semana; planejamento de compras para o início de julho.
+          \n🔸SÁBADO 28/06/2025: Reunião mensal de resultados; fechamento de metas; planejamento de julho.
+          \n____________________________________________________________________________________________
+          \nObrigada por conferir o estoque desse mês!
+          
+          \n<strong>Dica de Vendas:</strong> Estamos no mês de junho, itens como Amendoim, milho, salsicha, pão de cahorro quente, molho de tomate, leite condensado e carne interessam mais ao público em decorrência das Festas juninas típicas desse mês! Fique atento e disponível para elaborar Eventos e Promoções!`}
+
+      if (msg.includes("data de validade") || msg.includes("datas de validade") || msg.includes("validade açougue e padaria") || msg.includes(" data e validade") || msg.includes("validade")) {
+
+      return `Aqui estão as validades dos produtos da Padaria e do Açougue:
+        \nItens da Padaria:
+        \n🔸Pão francês : ${dataAleatoria()}.
+        \n🔸Baguette :${dataAleatoria()}.
+        \n🔸Pão de forma : ${dataAleatoria()}.
+        \n🔸Pão integral :${dataAleatoria()}.
+        \n🔸Biscoito Recheado : ${dataAleatoria()}.
+        \n🔸Biscoito Caseiro :${dataAleatoria()}.
+        \n__________________________________________________________________________________________
+        \nItens de Açougue:
+        \n🔸Carne Bovina : ${dataAleatoria()}.
+        \n🔸Carne suína : ${dataAleatoria()}.
+        \n🔸Carne branca : ${dataAleatoria()}.
+        \nSe tiver qualquer dúvida ou dificuldade para conseguir alguma validade da padaria ou açougue, pode falar com a gente! Estamos aqui pra te auxiliar!`;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////IFS DA IASMIN
+
+if (msg.includes("estoque de frutas") || msg.includes("estoque de verduras") || msg.includes("frutas e verduras em estoque")|| msg.includes("estoque")) {
+        return `No hortifrut temos as seguintes frutas e verduras em  estoque:
+          \n🔸Maçã : 5 caixas.
+          \n🔸Banana : 60 caxos.
+          \n🔸Laranja : 10 caixas.
+          \n🔸Alho : 2kg.
+          \n🔸Cenoura : 3 caixas.
+          \n🔸Melão : 68 peças.
+          \n🔸Morango : 25 bandejas .
+          \n🔸Mamão : 24 peças .
+          \n🔸Manga : 12 kg.
+          \n🔸Repolho: 18 kg.
+          \n🔸Melancia 36 peças: 
+          \n🔸Chuchu: 5 kg.
+          \n🔸Cebola :14 kg.
+          \n🔸Alface : 55 peças.
+          \n🔸Batata : 39kg.
+          \n🔸Uva : 9 caixas.
+          \n🔸Rúcula : 45 peças.
+          \nSe tiver qualquer dúvida ou dificuldade para conseguir alguma fruta ou verdura em estoque , pode falar com a gente! Estamos aqui pra te ajudar.!`
+      }
+
+      // Resposta para perguntas sobre contrato de trabalho
+      if (msg.includes("contrato de trabalho")) {
+        return `Você pode acessar o seu contrato de trabalho pelo portal interno da empresa. É só entrar em www.empresaX.com/portalrh, fazer login com seu CPF e a senha provisória que enviamos por e-mail. Qualquer problema no acesso, estamos aqui pra ajudar!`
+      }
+
+      // Resposta para perguntas sobre horário de trabalho
+      if (msg.includes("horário de trabalho") || msg.includes("trabalho") || msg.includes("horário") || msg.includes("horario") || msg.includes("horario de trabalho")) {
+        return `Nossa jornada padrão é de segunda a sexta-feira, das 9h às 18h, com 1 hora de pausa para o almoço. Alguns setores têm horários flexíveis — confirme com sua liderança se for o caso! 😊`
+      }
+
+      // Resposta para perguntas sobre integração
+      if (msg.includes("integração") || msg.includes("integracao")) {
+        return `No dia de integração, você vai: \n✔️ Conhecer a cultura e valores da empresa \n✔️ Ter um tour presencial pelos setores \n✔️ Assistir a apresentações sobre benefícios e políticas internas \n✔️ Receber orientações de TI e segurança \n✔️ Conhecer sua equipe e liderança \nTudo isso pra você se sentir em casa desde o primeiro dia! 🏠`
+      }
+
+      if (msg.includes("documentos para admissão") || msg.includes("documentos para admissao") || msg.includes("admissão") || msg.includes("admissao")) {
+        return `Para que possamos concluir seu processo de admissão direitinho, precisamos que você envie ou entregue os seguintes documentos:
+          \n🔸Documento de identidade com foto (RG ou CNH).
+          \n🔸CPF.
+          \n🔸Carteira de Trabalho (física ou digital).
+          \n🔸Comprovante de residência atualizado.
+          \n🔸Comprovante de escolaridade.
+          \n🔸Certidão de nascimento ou casamento.
+          \n🔸Cartão do PIS/PASEP (caso já tenha).
+          \n🔸Certificado de reservista (para homens).
+          \n🔸Dados bancários (banco, agência e conta para depósito do salário).
+          \n🔸Foto 3x4.
+          \n🔸Documentos dos dependentes (se for incluir no plano de saúde ou no IR).
+          \nSe tiver qualquer dúvida ou dificuldade para conseguir algum documento, pode falar com a gente! Estamos aqui pra te ajudar nesse início. Seja bem-vindo(a)!`
+      }
+
+      // Resposta padrão caso não entenda a mensagem
+      return "Desculpe, não entendi. Tente perguntar sobre benefícios ou motivação.";
+    }
+
+
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////
+    /* Função que MENU*/
+    function mostrarBotoesMaisOpcoes() {
+      const messagesDiv = document.getElementById("messages");
+
+      // Botões de opções de benefícios
+      const opcoes = [
+        { 
+          texto: "Horti Lar", 
+          resposta:"Aqui está as opções" },
+        { 
+          texto: "Agenda pessoal", 
+          resposta:"Aqui está as opções" },
+
+       
+        { 
+          texto: "❌ Nada, obrigado", 
+          resposta: "Certo, qualquer coisa é só voltar e me chamar, estarei sempre disponível!"
+         },
+      ];
+
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+          //container.remove();
+
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.texto === "❌ Nada, obrigado") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+
+          
+
+
+          addMessage(opcao.resposta, "bot");
+          container.remove();
+
+          if (opcao.texto === "Horti Lar") {
+            detalhesHorti();
+            return;
+          }
+
+          if (opcao.texto === "Agenda pessoal"){
+            agendapessoal()
+            return;
+          }
+
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.flexDirection = "column"
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          // Botão para ver outras opções
+          const repetirBtn = document.createElement("button");
+          repetirBtn.className = "opcao-btn";
+          repetirBtn.style.marginTop = "10px";
+          repetirBtn.textContent = "🔁 Voltar para o começo";
+          repetirBtn.onclick = () => {
+            addMessage("Ver outros benefícios", "user");
+            novoContainer.remove();
+            mostrarBotoesMaisOpcoes(); // Mostra os botões novamente
+          };
+          
+          // Botão para encerrar
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+      
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+
+
+    
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////Agenda pessoal
+
+function agendapessoal() {
+      const messagesDiv = document.getElementById("messages");
+
+      // Botões de opções de benefícios
+      const opcoes = [
+        { 
+          texto: "Aniversários", 
+          resposta:'<strong>Datas de Aniversários Famlia (cônjuge, filhos,pais, amigos, funcionários):<br>\n <strong>Filhos:</strong></strong> Ha 2 dia será o aniversário da sua filha Eloisa.\n<br> <strong> Cônjuge:</strong> Já passou o aniversário da sua esposa.\n <strong>\n Mãe:</strong> <strong> Sua mãe Carmen esta de aniversário hoje.</strong>\n <strong> <br>Pai:</strong> Seu pai Carlos Faz aniversário daqui ha 5 messes ,RETORNAREI AVISANDO!.\n' },
+        { 
+          texto: "Datas comemorativas", 
+          resposta:'<strong> Páscoa:</strong> Dia 20 de abril.\n<br> <strong> Natal: </strong> 25 de dezembro.\n\n<strong> Não esqueça dos presentes!!!</strong>\n<strong>(Esse dia você pode aumentar levemente o preço das uvas!)</strong>\n <br> <strong> Ano Novo: </strong> 31 de Dezembro.' },
+        { 
+          texto: "Horários (medicamentos/mensagens)", 
+          resposta:'\n<strong>13:00:</strong> Já ajeitou o seu cabelo hoje?\n<br><strong>15:00:</strong> Ta na hora de tomar o seu Rémedio.\n\n<strong>17:00:</strong> Horário vago, o que acha de enviar uma mensagem aos seus filhos!\n\n<strong>18:30:</strong> O que acha levar sua esposa tomar sorvete?' },
+        { 
+          texto: "Melhoramento profissional", 
+          resposta:'<strong>Cursos:</strong> O que acha de dar uma olha em novos cursos\n \n<strong>Sites:</strong> Plataformas de aprendizado como Time.ly, Factorial, Coursera.\n \n <strong>Horas livres:</strong> Vamos começar um novo curso!!!' },
+
+          {
+          texto: "🔁 Voltar",
+          resposta: ""},
+        
+
+        {
+          texto: "❌ Nada, obrigado", 
+          resposta: "Certo, qualquer coisa é só voltar e me chamar, estarei sempre disponível!"
+         },
+      ];
+
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+          //container.remove();
+
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.resposta.trim() !== "") {
+            addMessage(opcao.resposta, "bot");
+          }
+
+
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.texto === "❌ Nada, obrigado") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+
+          if (opcao.texto === "🔁 Voltar") {
+            container.remove();
+            mostrarBotoesMaisOpcoes();
+            return;
+          }
+
+
+          addMessage(opcao.resposta, "bot");
+          container.remove();
+
+         
+
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.flexDirection = "column"
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          // Botão para ver outras opções
+          const repetirBtn = document.createElement("button");
+          repetirBtn.className = "opcao-btn";
+          repetirBtn.style.marginTop = "10px";
+          repetirBtn.textContent = "🔁 Voltar para o começo";
+          repetirBtn.onclick = () => {
+            addMessage("Ver outros benefícios", "user");
+            novoContainer.remove();
+            mostrarBotoesMaisOpcoes(); // Mostra os botões novamente
+          };
+        
+          
+          // Botão para encerrar
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          container.detalhesHorti(messagesDiv);
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+      
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+
+
+
+
+
+
+
+    
+
+
+    ///////////////////////////////////////////////////////////////////////
+    // Função para detalhes do mercado
+    function detalhesHorti() {
+      const messagesDiv = document.getElementById("messages");
+
+     
+      const opcoes = [
+        { 
+          texto: "Mercado", 
+          resposta:"Aqui está as opções do mercado" },
+        { 
+          texto: "Horti Fruti", 
+          resposta:"Aqui está as opções do Horti Fruti" },
+
+        {
+          texto: "🔁 Voltar",
+          resposta: ""},
+        {
+          texto: "❌ Nada, obrigado", 
+          resposta: "Certo, qualquer coisa é só voltar e me chamar, estarei sempre disponível!"
+         },
+
+      ];
+
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+          //container.remove();
+
+          
+          if (opcao.resposta.trim() !== "") {
+            addMessage(opcao.resposta, "bot");
+          }
+
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.texto === "❌ Nada, obrigado") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+          if (opcao.texto === "🔁 Voltar") {
+            container.remove();
+            detalhesHorti();
+            return;
+          }
+
+          addMessage(opcao.resposta, "bot");
+          container.remove();
+
+          if (opcao.texto === "Mercado") {
+            mercado();
+            return;
+          }
+
+          if (opcao.texto === "Horti Fruti") {
+            hortiFruti();
+            return;
+          }
+
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.flexDirection = "column"
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          // Botão para ver outras opções
+          const repetirBtn = document.createElement("button");
+          repetirBtn.className = "opcao-btn";
+          repetirBtn.style.marginTop = "10px";
+          repetirBtn.textContent = "🔁 Voltar para o começo";
+          repetirBtn.onclick = () => {
+            addMessage("Ver outros benefícios", "user");
+            novoContainer.remove();
+            mostrarBotoesMaisOpcoes(); // Mostra os botões novamente
+          };
+          
+          // Botão para encerrar
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          container.detalhesHorti(messagesDiv);
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+      
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+
+///////////////////////////////////////////HORTFRUIT
+  // Função hortifruit
+  function hortiFruti() {
+          const messagesDiv = document.getElementById("messages");
+
+      // Botões de opções de benefícios
+      const opcoes = [
+        { 
+          texto: "Estoque", 
+          resposta: `No hortifrut temos as seguintes frutas e verduras em  estoque:
+          \n🔸Maçã : 5 caixas.
+          \n🔸Banana : 60 caxos.
+          \n🔸Laranja : 10 caixas.
+          \n🔸Alho : 2kg.
+          \n🔸Cenoura : 3 caixas.
+          \n🔸Melão : 68 peças.
+          \n🔸Morango : 25 bandejas .
+          \n🔸Mamão : 24 peças .
+          \n🔸Manga : 12 kg.
+          \n🔸Repolho: 18 kg.
+          \n🔸Melancia 36 peças: 
+          \n🔸Chuchu: 5 kg.
+          \n🔸Cebola :14 kg.
+          \n🔸Alface : 55 peças.
+          \n🔸Batata : 39kg.
+          \n🔸Uva : 9 caixas.
+          \n🔸Rúcula : 45 peças.
+          \nSe tiver qualquer dúvida ou dificuldade para conseguir alguma fruta ou verdura em estoque , pode falar com a gente! Estamos aqui pra te ajudar.!` },
+
+        { 
+          texto: "Data de Validade", 
+          resposta:`No hortifrut temos as validades das frutas e verduras fresquihas:
+          \n🔸Maçã : ${dataAleatoria()}.
+          \n🔸Banana :${dataAleatoria()}.
+          \n🔸Laranja : ${dataAleatoria()}.
+          \n🔸Alho :${dataAleatoria()}.
+          \n🔸Cenoura : ${dataAleatoria()}.
+          \n🔸Melão :${dataAleatoria()}.
+          \n🔸Morango : ${dataAleatoria()}.
+          \n🔸Mamão : ${dataAleatoria()}.
+          \n🔸Manga : ${dataAleatoria()}.
+          \n🔸Repolho: ${dataAleatoria()}.
+          \n🔸Melancia:${dataAleatoria()}.
+          \n🔸Chuchu: ${dataAleatoria()}.
+          \n🔸Cebola :${dataAleatoria()}.
+          \n🔸Alface : ${dataAleatoria()}.
+          \n🔸Batata : ${dataAleatoria()}.
+          \n🔸Uva : ${dataAleatoria()}.
+          \n🔸Rúcula : ${dataAleatoria()}.
+          \nSe tiver qualquer dúvida ou dificuldade para conseguir alguma validade das frutas ou verduras, pode falar com a gente! Estamos aqui pra te ajudar.!` },
+        
+        { 
+          texto: "Agenda da empresa", 
+          resposta:`AQUI ESTÁ O AGENDA DO MÊS DE JUNHO:
+
+          \n🔸DOMINGO 01/06/2025:  Supervisão leve, checagem de abertura de mês e plantão.
+          \n🔸SEGUNDA - FEIRA 02/06/2025: Atividade de Gestão: Desenvolvimento de plano de Marketing
+          \n🔸TERÇA - FEIRA 03/06/2025: Evento de Festa Junina.
+          \n🔸QUARTA - FEIRA 04/06/2025: Conferência Anual de Revisão de Vendas.
+          \n🔸QUINTA - FEIRA 05/06/2025: Acompanhamento da produção de itens típicos na padaria.
+          \n🔸SEXTA - FEIRA 06/06/2025: Checagem de promoções do fim de semana e reforço no estoque.
+          \n🔸SÁBADO 07/06/2025: Rotina reduzida, foco em supervisão geral.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 09/06/2025: Reunião mensal com líderes de setor.
+          \n🔸TERÇA - FEIRA 10/06/2025: Verificação da higiene e limpeza de câmaras frias (açougue, hortifruti)
+          \n🔸QUARTA - FEIRA 11/06/2025: Treinamento rápido com equipe da padaria sobre boas práticas.
+          \n🔸QUINTA - FEIRA 12/06/2025: Programação de compras de reposição de hortifrúti do fim de semana.
+          \n🔸SEXTA - FEIRA 13/06/2025: Reunião com setor de hortifrúti - verificação de sazonalidade.
+          \n🔸SÁBADO 14/06/2025: Avaliação do desempenho de vendas da semana.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 16/06/2025: Acompanhamento de metas de produtividade e vendas.
+          \n🔸TERÇA - FEIRA 17/06/2025: Reunião com fornecedores de hortifrúti para novos produtos da estação.
+          \n🔸QUARTA - FEIRA 18/06/2025: Conferência de perecíveis e validade do estoque do açougue e padaria.
+          \n🔸QUINTA - FEIRA 19/06/2025: Feriado - Corpus Christi.
+          \n🔸SEXTA - FEIRA 20/06/2025: Avaliação de desempenho individual dos funcionários.
+          \n🔸SÁBADO 21/06/2025: Atualização de preços conforme nova tabela de fornecedores.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 23/06/2025: Conferência de recebimento de mercadorias; alinhamento com fornecedores.
+          \n🔸TERÇA - FEIRA 24/06/2025: Checagem de limpeza de câmaras frias; ronda sanitária geral.  
+          \n🔸QUARTA - FEIRA 25/06/2025: Supervisão de vendas e fluxo de clientes; avaliação de atendimento.
+          \n🔸QUINTA - FEIRA 26/06/2025: Início do fechamento mensal: consolidação de relatórios.
+          \n🔸SEXTA - FEIRA 27/06/2025: Avaliação das vendas da semana; planejamento de compras para o início de julho.
+          \n🔸SÁBADO 28/06/2025: Reunião mensal de resultados; fechamento de metas; planejamento de julho.
+          \n____________________________________________________________________________________________
+          \nObrigada por conferir o estoque desse mês!
+          
+          \n<strong>Dica de Vendas:</strong> Estamos no mês de junho, itens como Amendoim, milho, salsicha, pão de cahorro quente, molho de tomate, leite condensado e carne interessam mais ao público em decorrência das Festas juninas típicas desse mês! Fique atento e disponível para elaborar Eventos e Promoções!` },
+
+        { 
+          texto: "Vendas mensal",
+          resposta:'Frutas                                                                         No mês passado vendemos: </strong> \n🔸Maçã : 56 unidades,\n🔸Banana :159 unidades,      \n🔸laranja : 23 unidades,  \n🔸alho :240 unidades,  \n🔸cenoura :274 unidades,  \n🔸melão : 19 unidades,        \n🔸morango : 48 unidades,    \n🔸mamão :58 unidades,   \n🔸manga : 65 unidades,         \n🔸repolho: 100 unidades,  \n🔸melancia:12 unidades,   \n🔸chuchu: 50 unidades,   \n🔸cebola :285 unidades,  \n🔸alface : 200 unidades,  \n🔸batata :302 unidades,     \n🔸uva : 75 unidades,   \n🔸rúcula :46 unidades'},
+          
+        {
+          texto: "🔁 Voltar",
+          resposta: ""},
+        {
+          texto: "❌ Nada, obrigado", 
+          resposta: "Certo, qualquer coisa é só voltar e me chamar, estarei sempre disponível!"
+         },
+      ];
+
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuári
+          container.remove();
+
+
+//////////////////////////////////////////////////////
+          if (opcao.resposta.trim() !== "") {
+            addMessage(opcao.resposta, "bot");
+          }
+
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.texto === "❌ Nada, obrigado") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+          if (opcao.texto === "🔁 Voltar") {
+            container.remove();
+            detalhesHorti();
+            return;
+          }
+/////////////////////////////////////////////////
+
+
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.flexDirection = "column"
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          // Botão para ver outras opções
+          const repetirBtn = document.createElement("button");
+          repetirBtn.className = "opcao-btn";
+          repetirBtn.style.marginTop = "10px";
+          repetirBtn.textContent = "🔁 Voltar para o começo";
+          repetirBtn.onclick = () => {
+            addMessage("Ver outros benefícios", "user");
+            novoContainer.remove();
+            mostrarBotoesMaisOpcoes(); // Mostra os botões novamente
+          };
+          
+          // Botão para encerrar
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+
+
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+// Função hortifruit
+function mercado() {
+          const messagesDiv = document.getElementById("messages");
+
+      // Botões de opções de benefícios
+      const opcoes = [
+      { 
+  //         { 
+  //         texto: "Estoque", 
+  //         resposta:`AQUI ESTÁ O ESTOQUE DO MÊS ATUAL:
+  //         \n - PADARIA:
+  //         \n🔸PAO FRANCES = 25 UN.
+  //         \n🔸BAGUETTE = 92 UN.
+  //         \n🔸PÃO DE FORMA = 38 UN.
+  //         \n🔸PAO INTEGRAL = 24 UN.
+  //         \n🔸BISCOITO RECHEADO = 19 UN.
+  //         \n🔸BISCOITO CASEIRO = 34 UN.
+  //         \n__________________________________________________________________________________________
+  //         \n - AÇOUGUE:
+  //         \n🔸CARNE BOVINA = 1,5 kg
+  //         \n🔸CARNE SUÍNA = 1 kg
+  //         \n🔸CARNE BRANCA = 1,5 kg \n
+  //       \nObrigada por conferir o estoque desse mês!` },
+
+
+
+
+         texto: "Data de Validade", 
+         resposta:`Aqui estão as validades dos produtos da Padaria e do Açougue:
+           \nItens da Padaria:
+           \n🔸Pão francês : ${dataAleatoria()}.
+           \n🔸Baguette :${dataAleatoria()}.
+           \n🔸Pão de forma : ${dataAleatoria()}.
+           \n🔸Pão integral :${dataAleatoria()}.
+           \n🔸Biscoito Recheado : ${dataAleatoria()}.
+           \n🔸Biscoito Caseiro :${dataAleatoria()}.
+           \n__________________________________________________________________________________________
+          \nItens de Açougue:
+          \n🔸Carne Bovina : ${dataAleatoria()}.
+          \n🔸Carne suína : ${dataAleatoria()}.
+          \n🔸Carne branca : ${dataAleatoria()}.
+          \nSe tiver qualquer dúvida ou dificuldade para conseguir alguma validade da padaria ou açougue, pode falar com a gente! Estamos aqui pra te auxiliar!`},
+        
+        { 
+          texto: "Agenda da empresa", 
+          resposta:`AQUI ESTÁ O AGENDA DO MÊS DE JUNHO:
+
+          \n🔸DOMINGO 01/06/2025:  Supervisão leve, checagem de abertura de mês e plantão.
+          \n🔸SEGUNDA - FEIRA 02/06/2025: Atividade de Gestão: Desenvolvimento de plano de Marketing
+          \n🔸TERÇA - FEIRA 03/06/2025: Evento de Festa Junina.
+          \n🔸QUARTA - FEIRA 04/06/2025: Conferência Anual de Revisão de Vendas.
+          \n🔸QUINTA - FEIRA 05/06/2025: Acompanhamento da produção de itens típicos na padaria.
+          \n🔸SEXTA - FEIRA 06/06/2025: Checagem de promoções do fim de semana e reforço no estoque.
+          \n🔸SÁBADO 07/06/2025: Rotina reduzida, foco em supervisão geral.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 09/06/2025: Reunião mensal com líderes de setor.
+          \n🔸TERÇA - FEIRA 10/06/2025: Verificação da higiene e limpeza de câmaras frias (açougue, hortifruti)
+          \n🔸QUARTA - FEIRA 11/06/2025: Treinamento rápido com equipe da padaria sobre boas práticas.
+          \n🔸QUINTA - FEIRA 12/06/2025: Programação de compras de reposição de hortifrúti do fim de semana.
+          \n🔸SEXTA - FEIRA 13/06/2025: Reunião com setor de hortifrúti - verificação de sazonalidade.
+          \n🔸SÁBADO 14/06/2025: Avaliação do desempenho de vendas da semana.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 16/06/2025: Acompanhamento de metas de produtividade e vendas.
+          \n🔸TERÇA - FEIRA 17/06/2025: Reunião com fornecedores de hortifrúti para novos produtos da estação.
+          \n🔸QUARTA - FEIRA 18/06/2025: Conferência de perecíveis e validade do estoque do açougue e padaria.
+          \n🔸QUINTA - FEIRA 19/06/2025: Feriado - Corpus Christi.
+          \n🔸SEXTA - FEIRA 20/06/2025: Avaliação de desempenho individual dos funcionários.
+          \n🔸SÁBADO 21/06/2025: Atualização de preços conforme nova tabela de fornecedores.
+          \n____________________________________________________________________________________________
+
+          \n🔸SEGUNDA - FEIRA 23/06/2025: Conferência de recebimento de mercadorias; alinhamento com fornecedores.
+          \n🔸TERÇA - FEIRA 24/06/2025: Checagem de limpeza de câmaras frias; ronda sanitária geral.  
+          \n🔸QUARTA - FEIRA 25/06/2025: Supervisão de vendas e fluxo de clientes; avaliação de atendimento.
+          \n🔸QUINTA - FEIRA 26/06/2025: Início do fechamento mensal: consolidação de relatórios.
+          \n🔸SEXTA - FEIRA 27/06/2025: Avaliação das vendas da semana; planejamento de compras para o início de julho.
+          \n🔸SÁBADO 28/06/2025: Reunião mensal de resultados; fechamento de metas; planejamento de julho.
+          \n____________________________________________________________________________________________
+          \nObrigada por conferir o estoque desse mês!
+          
+          \n<strong>Dica de Vendas:</strong> Estamos no mês de junho, itens como Amendoim, milho, salsicha, pão de cahorro quente, molho de tomate, leite condensado e carne interessam mais ao público em decorrência das Festas juninas típicas desse mês! Fique atento e disponível para elaborar Eventos e Promoções!` },
+
+        { 
+          texto: "Vendas mensal",
+          resposta:'Frutas                                                                         No mês passado vendemos: </strong> \n🔸Maçã : 56 unidades,\n🔸Banana :159 unidades,      \n🔸laranja : 23 unidades,  \n🔸alho :240 unidades,  \n🔸cenoura :274 unidades,  \n🔸melão : 19 unidades,        \n🔸morango : 48 unidades,    \n🔸mamão :58 unidades,   \n🔸manga : 65 unidades,         \n🔸repolho: 100 unidades,  \n🔸melancia:12 unidades,   \n🔸chuchu: 50 unidades,   \n🔸cebola :285 unidades,  \n🔸alface : 200 unidades,  \n🔸batata :302 unidades,     \n🔸uva : 75 unidades,   \n🔸rúcula :46 unidades'},
+          
+        {
+          texto: "🔁 Voltar",
+          resposta: ""},
+        {
+          texto: "❌ Nada, obrigado", 
+          resposta: "Certo, qualquer coisa é só voltar e me chamar, estarei sempre disponível!"
+         },
+      ];
+
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuári
+          container.remove();
+
+
+//////////////////////////////////////////////////////
+          if (opcao.resposta.trim() !== "") {
+            addMessage(opcao.resposta, "bot");
+          }
+
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.texto === "❌ Nada, obrigado") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+          if (opcao.texto === "🔁 Voltar") {
+            container.remove();
+            detalhesHorti();
+            return;
+          }
+/////////////////////////////////////////////////
+
+
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.flexDirection = "column"
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          // Botão para ver outras opções
+          const repetirBtn = document.createElement("button");
+          repetirBtn.className = "opcao-btn";
+          repetirBtn.style.marginTop = "10px";
+          repetirBtn.textContent = "🔁 Voltar para o começo";
+          repetirBtn.onclick = () => {
+            addMessage("Ver outros benefícios", "user");
+            novoContainer.remove();
+            mostrarBotoesMaisOpcoes(); // Mostra os botões novamente
+          };
+          
+          // Botão para encerrar
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+
+
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////
+  // Função mercado
+  // function mercado() {
+  //         const messagesDiv = document.getElementById("messages");
+
+  //     // Botões de opções de benefícios
+  //     const opcoes = [
+  //       { 
+  //         texto: "Estoque", 
+  //         resposta:`AQUI ESTÁ O ESTOQUE DO MÊS ATUAL:
+  //         \n - PADARIA:
+  //         \n🔸PAO FRANCES = 25 UN.
+  //         \n🔸BAGUETTE = 92 UN.
+  //         \n🔸PÃO DE FORMA = 38 UN.
+  //         \n🔸PAO INTEGRAL = 24 UN.
+  //         \n🔸BISCOITO RECHEADO = 19 UN.
+  //         \n🔸BISCOITO CASEIRO = 34 UN.
+  //         \n__________________________________________________________________________________________
+  //         \n - AÇOUGUE:
+  //         \n🔸CARNE BOVINA = 1,5 kg
+  //         \n🔸CARNE SUÍNA = 1 kg
+  //         \n🔸CARNE BRANCA = 1,5 kg \n
+  //       \nObrigada por conferir o estoque desse mês!` },
+
+  //       { 
+  //         texto: "Data de Validade", 
+  //         resposta:`Aqui estão as validades dos produtos da Padaria e do Açougue:
+  //       \nItens da Padaria:
+  //       \n🔸Pão francês : ${dataAleatoria()}.
+  //       \n🔸Baguette :${dataAleatoria()}.
+  //       \n🔸Pão de forma : ${dataAleatoria()}.
+  //       \n🔸Pão integral :${dataAleatoria()}.
+  //       \n🔸Biscoito Recheado : ${dataAleatoria()}.
+  //       \n🔸Biscoito Caseiro :${dataAleatoria()}.
+  //       \n__________________________________________________________________________________________
+  //       \nItens de Açougue:
+  //       \n🔸Carne Bovina : ${dataAleatoria()}.
+  //       \n🔸Carne suína : ${dataAleatoria()}.
+  //       \n🔸Carne branca : ${dataAleatoria()}.
+  //       \nSe tiver qualquer dúvida ou dificuldade para conseguir alguma validade da padaria ou açougue, pode falar com a gente! Estamos aqui pra te auxiliar!`},
+        
+  //       { 
+  //         texto: "Agenda da empresa", 
+  //         resposta:`AQUI ESTÁ O AGENDA DO MÊS DE JUNHO:
+
+  //         \n🔸DOMINGO 01/06/2025:  Supervisão leve, checagem de abertura de mês e plantão.
+  //         \n🔸SEGUNDA - FEIRA 02/06/2025: Atividade de Gestão: Desenvolvimento de plano de Marketing
+  //         \n🔸TERÇA - FEIRA 03/06/2025: Evento de Festa Junina.
+  //         \n🔸QUARTA - FEIRA 04/06/2025: Conferência Anual de Revisão de Vendas.
+  //         \n🔸QUINTA - FEIRA 05/06/2025: Acompanhamento da produção de itens típicos na padaria.
+  //         \n🔸SEXTA - FEIRA 06/06/2025: Checagem de promoções do fim de semana e reforço no estoque.
+  //         \n🔸SÁBADO 07/06/2025: Rotina reduzida, foco em supervisão geral.
+  //         \n____________________________________________________________________________________________
+
+  //         \n🔸SEGUNDA - FEIRA 09/06/2025: Reunião mensal com líderes de setor.
+  //         \n🔸TERÇA - FEIRA 10/06/2025: Verificação da higiene e limpeza de câmaras frias (açougue, hortifruti)
+  //         \n🔸QUARTA - FEIRA 11/06/2025: Treinamento rápido com equipe da padaria sobre boas práticas.
+  //         \n🔸QUINTA - FEIRA 12/06/2025: Programação de compras de reposição de hortifrúti do fim de semana.
+  //         \n🔸SEXTA - FEIRA 13/06/2025: Reunião com setor de hortifrúti - verificação de sazonalidade.
+  //         \n🔸SÁBADO 14/06/2025: Avaliação do desempenho de vendas da semana.
+  //         \n____________________________________________________________________________________________
+
+  //         \n🔸SEGUNDA - FEIRA 16/06/2025: Acompanhamento de metas de produtividade e vendas.
+  //         \n🔸TERÇA - FEIRA 17/06/2025: Reunião com fornecedores de hortifrúti para novos produtos da estação.
+  //         \n🔸QUARTA - FEIRA 18/06/2025: Conferência de perecíveis e validade do estoque do açougue e padaria.
+  //         \n🔸QUINTA - FEIRA 19/06/2025: Feriado - Corpus Christi.
+  //         \n🔸SEXTA - FEIRA 20/06/2025: Avaliação de desempenho individual dos funcionários.
+  //         \n🔸SÁBADO 21/06/2025: Atualização de preços conforme nova tabela de fornecedores.
+  //         \n____________________________________________________________________________________________
+
+  //         \n🔸SEGUNDA - FEIRA 23/06/2025: Conferência de recebimento de mercadorias; alinhamento com fornecedores.
+  //         \n🔸TERÇA - FEIRA 24/06/2025: Checagem de limpeza de câmaras frias; ronda sanitária geral.  
+  //         \n🔸QUARTA - FEIRA 25/06/2025: Supervisão de vendas e fluxo de clientes; avaliação de atendimento.
+  //         \n🔸QUINTA - FEIRA 26/06/2025: Início do fechamento mensal: consolidação de relatórios.
+  //         \n🔸SEXTA - FEIRA 27/06/2025: Avaliação das vendas da semana; planejamento de compras para o início de julho.
+  //         \n🔸SÁBADO 28/06/2025: Reunião mensal de resultados; fechamento de metas; planejamento de julho.
+  //         \n____________________________________________________________________________________________
+  //         \nObrigada por conferir o estoque desse mês!
+          
+  //         \n<strong>Dica de Vendas:</strong> Estamos no mês de junho, itens como Amendoim, milho, salsicha, pão de cahorro quente, molho de tomate, leite condensado e carne interessam mais ao público em decorrência das Festas juninas típicas desse mês! Fique atento e disponível para elaborar Eventos e Promoções!` },
+
+  //       { 
+  //         texto: "Vendas mensal", 
+  //         resposta:`Açougue          <strong>No mês passado vendemos: </strong> \n🔸Carne Bovina: 1500 cortes,\n🔸 Carne Suína:1230 cortes,  \n🔸Carne Branca : 1348 cortes" ,
+        
+  //          Padaria, 
+  //         <strong>No mês passado vendemos: </strong> \n🔸Pão frances:1258 unidades,\n🔸Baguete:1120 unidades, \n🔸Pão de forma:1159 unidades,\n🔸Pão integral:1308 unidades, \n🔸Biscoito recheado:2224 unidades,\n🔸Biscoito caseiro:2210 unidades`},
+  //       {
+  //         texto: "🔁 Voltar",
+  //         resposta:""},
+  //       {
+  //         texto: "❌ Nada, obrigado", 
+  //         resposta: "Certo, qualquer coisa é só voltar e me chamar, estarei sempre disponível!"
+  //        },
+  //     ];
+
+  //     // Cria container para os botões
+  //     const container = document.createElement("div");
+  //     container.style.display = "flex";
+  //     container.style.flexDirection = "column";
+  //     container.style.rowgap = "10px";
+  //     container.style.marginTop = "10px"; 
+      
+  //     // Cria um botão para cada opção
+  //     opcoes.forEach(opcao => {
+  //       const btn = document.createElement("button");
+  //       btn.className = "opcao-btn";
+  //       btn.textContent = opcao.texto;
+  //       btn.onclick = () => {
+  //         addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+  //         //container.remove();
+
+
+
+
+  //         if (opcao.resposta.trim() !== "") {
+  //           addMessage(opcao.resposta, "bot");
+  //         }
+
+  //         // Se clicou em "Nada, obrigado", apenas remove os botões
+  //         if (opcao.texto === "❌ Nada, obrigado") {
+  //           container.remove();
+  //           return; // ← impede que o restante do código rode
+  //         }
+
+  //         if (opcao.texto === "🔁 Voltar") {
+  //           container.remove();
+  //           detalhesHorti();
+  //           return;
+  //         }
+
+  //         addMessage(opcao.resposta, "bot");
+  //         container.remove();
+
+  //         // Cria botões de ação após selecionar uma opção
+  //         const novoContainer = document.createElement("div");
+  //         novoContainer.style.display = "flex";
+  //         novoContainer.style.flexDirection = "column"
+  //         novoContainer.style.gap = "10px";
+  //         novoContainer.style.marginTop = "10px";
+          
+  //         // Botão para ver outras opções
+  //         const repetirBtn = document.createElement("button");
+  //         repetirBtn.className = "opcao-btn";
+  //         repetirBtn.style.marginTop = "10px";
+  //         repetirBtn.textContent = "🔁 Voltar para o começo";
+  //         repetirBtn.onclick = () => {
+  //           addMessage("Ver outros benefícios", "user");
+  //           novoContainer.remove();
+  //           mostrarBotoesMaisOpcoes(); // Mostra os botões novamente
+  //         };
+          
+  //         // Botão para encerrar
+  //         const naoBtn = document.createElement("button");
+  //         naoBtn.className = "opcao-btn";
+  //         naoBtn.textContent = "❌ Não, obrigado";
+  //         naoBtn.onclick = () => {
+  //           addMessage("Não, obrigado", "user");
+  //           novoContainer.remove();
+  //         };
+          
+  //         // Adiciona os botões ao container e ao chat
+  //         novoContainer.appendChild(repetirBtn);
+  //         novoContainer.appendChild(naoBtn);
+  //         messagesDiv.appendChild(novoContainer);
+  //         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  //       };
+
+
+  //       container.appendChild(btn);
+  //     });
+
+
+  //     // Adiciona os botões ao chat
+  //     messagesDiv.appendChild(container);
+  //     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  // }
+
+//////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////
+function dataAleatoria(){
+        const hoje = new Date();
+        const diasFuturos = Math.floor(Math.random() * 90);
+        const dataAleatoria = new Date(hoje);
+        dataAleatoria.setDate(hoje.getDate() + diasFuturos);
+
+        const dia = String(dataAleatoria.getDate()).padStart(2, '0');
+        const mes = String(dataAleatoria.getMonth() + 1).padStart(2, '0');
+        const ano = dataAleatoria.getFullYear();
+
+        return `${dia}/${mes}/${ano}`;        
+    }
+  
+
+
+
+
+    // Permite enviar mensagem pressionando Enter
+    document.getElementById("userInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Evita o comportamento padrão do Enter
+        sendMessage();  // Chama a função de enviar mensagem
+      }
+    });
+  </script>
+</body>
+</html>

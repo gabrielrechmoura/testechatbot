@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>MilkBot - Chat</title>
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <style> /*-- Início da seção de estilos CSS */
+
+    /* Estilo geral do corpo da página */
+    body {  
+      font-family: 'Segoe UI', sans-serif;  /* Define a fonte padrão */
+      background: linear-gradient(to right, #265924, #588c52);  /* Fundo com gradiente azul */
+      margin: 0;  /* Remove margens padrão */
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Estilo do container principal do chat */
+    #chat {
+      width: 600px;  /* Largura fixa */
+      height: 700px;  /* Altura fixa */
+      max-height: 90vh;  /* Altura máxima de 90% da tela */
+      background: #fff;  /* Fundo branco */
+      border-radius: 12px;  /* Bordas arredondadas */
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);  /* Sombra suave */
+      display: flex;  /* Usa flexbox para organizar os elementos internos */
+      flex-direction: column;  /* Organiza os filhos em coluna */
+      overflow: hidden;  /* Esconde qualquer conteúdo que ultrapasse */
+    }
+
+    /* Estilo do cabeçalho do chat */
+    #header {
+      background: #4aa347;  /* Cor de fundo azul */
+      color: white;  /* Texto branco */
+      padding: 15px;  /* Espaçamento interno */
+      font-weight: bold;  /* Texto em negrito */
+      font-size: 18px;  /* Tamanho da fonte */
+    }
+
+    /* Área onde as mensagens são exibidas */
+    #messages {
+      flex: 1;  /* Ocupa todo o espaço disponível */
+      padding: 15px;  /* Espaçamento interno */
+      overflow-y: auto;  /* Habilita scroll vertical se necessário */
+      background: #f9f9f9;  /* Cor de fundo cinza claro */
+    }
+
+    /* Estilo base para todas as mensagens */
+    .message {
+      margin: 10px 0;  /* Espaçamento externo */
+      max-width: 80%;  /* Largura máxima */
+      padding: 10px 15px;  /* Espaçamento interno */
+      border-radius: 20px;  /* Bordas arredondadas */
+      line-height: 1.3;  /* Espaçamento entre linhas */
+      word-wrap: break-word;  /* Quebra palavras longas */
+      display: inline-block;  /* Permite que a largura se ajuste ao conteúdo */
+    }
+
+    /* Estilo específico para mensagens do bot */
+    .bot {
+      background: #9ceb89;  /* Cor de fundo azul claro */
+      color: black;  /* Cor do texto vermelho escuro */
+      align-self: flex-start;  /* Alinha à esquerda */
+      border-bottom-left-radius: 0;  /* Remove arredondamento no canto inferior esquerdo */
+    }
+
+
+    /* Estilo específico para mensagens do usuário */
+    .user {
+      background: #9ceb89;  /* Cor de fundo verde claro */
+      color: #0f0f0f;  /* Cor do texto verde escuro */
+      align-self: flex-end;  /* Alinha à direita */
+      border-bottom-right-radius: 0;  /* Remove arredondamento no canto inferior direito */
+      text-align: right;  /* Alinha o texto à direita */
+    }
+
+    /* Área de entrada de texto */
+    #input-area {
+      display: flex;  /* Organiza os elementos filhos em linha */
+      border-top: 1px solid #ddd;  /* Linha divisória no topo */
+    }
+
+    /* Campo de entrada de texto */
+    #userInput {
+      flex: 1;  /* Ocupa todo o espaço disponível */
+      border: none;  /* Remove borda */
+      padding: 15px;  /* Espaçamento interno */
+      font-size: 16px;  /* Tamanho da fonte */
+      outline: none;  /* Remove contorno ao focar */
+    }
+
+    /* Estilo do botão de enviar */
+    button {
+      background: #4aa347;  /* Cor de fundo azul */
+      color: white;  /* Texto branco */
+      border: none;  /* Remove borda */
+      padding: 15px 20px;  /* Espaçamento interno */
+      font-size: 16px;  /* Tamanho da fonte */
+      cursor: pointer;  /* Muda cursor para pointer ao passar o mouse */
+      transition: 0.3s;  /* Suaviza transições de estado */
+    }
+
+    /* Efeito hover no botão */
+    button:hover {
+      background: #397c37;  /* Cor mais escura ao passar o mouse */
+    }
+
+    /* Estilo dos botões de opção */
+    .opcao-btn {
+      background: #4aa347;  /* Cor de fundo verde muito claro */
+      color: #ffffff;  /* Cor do texto verde escuro */
+      border-radius: 20px;  /* Bordas arredondadas */
+      padding: 10px 15px;  /* Espaçamento interno */
+      border: none;  /* Remove borda */
+      cursor: pointer;  /* Muda cursor para pointer */
+      font-weight: bold;  /* Texto em negrito */
+      margin-top: 10px;  /* Espaçamento superior */
+    }
+
+    /* Efeito hover nos botões de opção */
+    .opcao-btn:hover {
+      background: #8bd684;  /* Cor de fundo mais escura ao passar o mouse */
+    }
+  </style>
+</head>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <h1>Portal de Chatbots</h1>
+            <nav>
+            <a href="../index.html">Início</a>
+            <a href="../chat1_teddybot/index.html">Teddy Bot</a>
+            <a href="../chat2_milkbot/index.html">Milk Bot</a>
+            <a href="../chat3/index.html">Diamond Bot</a>
+            <a href="../chat4/index.html">Chat 4 - Sem nome</a>
+            <a href="../chat5-hortilar bot/hortlar.html">HortLar Bot</a>
+            </nav>
+        </div>
+    </header>
+  <script src="../assets/js/header.js"></script>
+
+  <main>
+    <!-- Container principal do chat -->
+    <div id="chat">
+      <!-- Cabeçalho com nome do bot -->
+      <div id="header">🐄 MilkBot 🥛</div>
+      
+      <!-- Área de mensagens (contém a mensagem inicial do bot) -->
+      <div id="messages">
+        <div class="message bot">Olá! Me chamo MilkBot como posso te ajudar?</div>
+      </div>
+      
+      <!-- Área de entrada de mensagens -->
+      <div id="input-area">
+        <!-- Campo de texto para o usuário digitar -->
+        <input type="text" id="userInput" placeholder="Digite aqui...">
+        <!-- Botão para enviar a mensagem -->
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+    </div>
+  </main>
+
+
+  <!-- Início da seção de JavaScript -->
+  <script>
+
+     /* Função para enviar mensagem do usuário e obter resposta do bot */
+    function sendMessage() {
+      const input = document.getElementById('userInput'); // Obtém o elemento de entrada de texto
+      const msg = input.value.trim(); // Remove espaços em branco no início/fim e armazena a mensagem
+
+      if (msg === "") return; // Se a mensagem estiver vazia, não faz nada
+
+      addMessage(msg, "user");  // Adiciona a mensagem do usuário ao chat
+      input.value = ""; // Limpa o campo de entrada
+
+      const resposta = responder(msg);  // Obtém a resposta do bot para a mensagem do usuário
+      setTimeout(() => addMessage(resposta, "bot"), 500); // Adiciona a resposta do bot após um pequeno atraso (500ms)
+    }
+
+    /* Função que adiciona uma mensagem ao chat */
+    function addMessage(text, type) {
+      const messagesDiv = document.getElementById('messages');  // Obtém a div que contém todas as mensagens
+
+      const container = document.createElement('div');  // Cria um container para a mensagem (para controlar o alinhamento)
+      container.style.display = 'flex';
+      container.style.justifyContent = type === 'user' ? 'flex-end' :  'flex-start';  // Alinha à direita para mensagens do usuário, esquerda para o bot
+
+      const div = document.createElement('div');  // Cria a div que vai conter o texto da mensagem
+      div.className = 'message ' + type;  // Adiciona classes CSS
+
+      // Se for mensagem do bot, converte quebras de linha para tags <br>
+      if (type === 'bot') { 
+        div.innerHTML = text.replace(/\n/g, "<br>"); // quebra linha só nas mensagens do bot
+      } else {
+        div.textContent = text; // Mensagens do usuário usam textContent para segurança
+      }
+
+      // Adiciona a mensagem ao container e o container à área de mensagens
+      container.appendChild(div);
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight; // Rola automaticamente para a última mensagem
+    }
+
+    /* Função da Lógica principal do bot - responde às mensagens do usuário */
+    function responder(msg) {
+      msg = msg.toLowerCase();  // Converte a mensagem para minúsculas para facilitar a comparação
+
+     // Respostas fixas para mensagens específicas
+     const respostasFixas = {  
+        "motivação": "Acredite em você! O esforço de hoje é o sucesso de amanhã.",
+        "motivação amorosa": "Mesmo quando o dia for difícil, lembre-se: você é amado, admirado e capaz de realizar tudo o que sonha.",  
+        "conselho":"Você não precisa acertar sempre. Cada erro te aproxima de uma versão mais sábia e experiente de você mesmo",
+        "oi": "Oi, em que posso te ajudar hoje?",
+        "clima": "Ainda não posso ver o clima real, mas espero que esteja ensolarado!",
+        "sair": "Até logo! Estarei aqui se precisar.",
+     };
+
+      // Se a mensagem corresponder a uma resposta fixa, retorna ela
+      if (respostasFixas[msg]) {
+        return respostasFixas[msg];
+      }
+
+      // Se a mensagem incluir hora
+      if (msg.includes("hora")) {
+        const agora = new Date();
+        return `Agora são ${agora.getHours()}h${agora.getMinutes().toString().padStart(2, '0')}m`;
+      }
+      
+      // Verifica se a mensagem contém palavras relacionadas a benefícios
+      if (msg.includes("menu")) {
+        setTimeout(() => mostrarBotoesMaisOpcoes(), 1000);  // Mostra botões de opções após 1 segundo
+        return "Sim, gostaria de saber mais sobre o menu em específico?";
+      }
+
+      // Resposta padrão caso não entenda a mensagem
+      return "Desculpe, não entendi. Tente perguntar sobre o Menu.";
+    }
+
+    /* Função que Mostra botões com opções do Menu */
+    function mostrarBotoesMaisOpcoes() {
+      const messagesDiv = document.getElementById("messages");
+
+      // Botões de opções de menu
+      const opcoes = [
+        { 
+          texto: "Resfriadores", 
+          resposta: "<strong>Quantidade de resfriadores:</strong> Contém dois resfriadores com a capacidade máxima de 100.000 litros cada. <br> <strong> Temperatura mínima dos resfriadores:</strong> Aproximadamente -5°C. \n <strong>Temperatura dos pasteurizadores:</strong> Temperatura ideal, 75°C." },
+        { 
+          texto: "Estoque de embalagem", 
+          resposta: "<strong> Queijo Mussarela 300g:</strong>  7.000<br> <strong>Queijo Cheddar 300g:</strong> 7.000 <br><strong> Iogurte de Morango 1l: </strong> 15.000 <br> <strong> Iogurte de Morango 500g:</strong> 33.000" },
+        { 
+          texto: "Agenda mensal",
+          resposta: "<strong>Reuniões/Data/Horário:</strong> <br> PCP - 20/05- 15:00 <br> Check List - 24/05 - 11:00 <br> Qualidade - 24/05 - 14:30 <br> Clientes - 28/05 - 08:00 <br> RPP - 28/05 - 13:30 <br> BPF - 30/05 - 15:30 <br> APPCC - 05/06 - 09:30 <br> SST - 09/06 - 10:00 <br> Gestão Industrial - 09/06 - 17:00   \n <strong>Local:</strong> Sala de reuniões. \n "},
+          { 
+          texto: "Treinamentos", 
+          resposta: "<strong>Treinamentos/Data/Horário/Local</strong> <br> 🔸 Uso correto de EPIs - 02/06 - 15:00 - Sala de treinamentos II <br> 🔸 Treinamento em primeiro socorros - 03/05 - 11:00 Sala de treinamento I <br> 🔸 Liderança e Gestão de pessoas - 03/05 - 16:00 - Sala de Treinamento III <br> 🔸 Calibração e Manutenção de Equipamentos de Medição - 08/05 - 14:00 - Sala de Treinamento III <br> 🔸 Treinamento CIP - 11/05 - 13:30 - Sala de Treinamento II  \n "},
+        { 
+          texto: "Cidades que fornecemos", 
+          resposta: "<strong>20 cidades:</strong> <br> Capinzal <br> Joaçaba <br> Erval do Oeste <br> Irani <br> Catanduvas <br> Lacerdópolis <br> Pres. Castelo Branco <br> Vargem Bonita <br> Concórdia <br> Água Doce <br> Salto Veloso <br> Videira <br> Pinheiro Preto <br> Ouro <br> Zortéa <br> Campos Novos <br> Piratuba <br> Ibian <br> Xanxerê <br> Lindoia do Sul"},
+        { 
+          texto: "Produtos", 
+          resposta: "<strong>Produtos Fabricados</strong> <br> Queijo <br> Iogurte <br> Requeijão <br>  Leite"},
+        { 
+          texto: "❌ Nada, obrigado", 
+          resposta: "" }
+      ];
+      
+      // Cria container para os botões
+      const container = document.createElement("div");
+      container.style.display = "flex";
+      container.style.flexDirection = "column";
+      container.style.rowgap = "10px";
+      container.style.marginTop = "10px"; 
+      
+      // Cria um botão para cada opção
+      opcoes.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "opcao-btn";
+        btn.textContent = opcao.texto;
+        btn.onclick = () => {
+          addMessage(opcao.texto, "user");  // Adiciona a opção selecionada como mensagem do usuário
+          
+          // Se clicou em "Nada, obrigado", apenas remove os botões
+          if (opcao.texto === "❌ Nada, obrigado") {
+            container.remove();
+            return; // ← impede que o restante do código rode
+          }
+
+          addMessage(opcao.resposta, "bot");
+          container.remove();
+
+          // Cria botões de ação após selecionar uma opção
+          const novoContainer = document.createElement("div");
+          novoContainer.style.display = "flex";
+          novoContainer.style.gap = "10px";
+          novoContainer.style.marginTop = "10px";
+          
+          // Botão para ver outras opções
+          const repetirBtn = document.createElement("button");
+          repetirBtn.className = "opcao-btn";
+          repetirBtn.style.marginTop = "10px";
+          repetirBtn.textContent = "🔁 Ver outras opções";
+          repetirBtn.onclick = () => {
+            addMessage("Ver outras opções", "user");
+            novoContainer.remove();
+            mostrarBotoesMaisOpcoes(); // Mostra os botões novamente
+          };
+          
+          // Botão para encerrar
+          const naoBtn = document.createElement("button");
+          naoBtn.className = "opcao-btn";
+          naoBtn.textContent = "❌ Não, obrigado";
+          naoBtn.onclick = () => {
+            addMessage("Não, obrigado", "user");
+            novoContainer.remove();
+          };
+          
+          // Adiciona os botões ao container e ao chat
+          novoContainer.appendChild(repetirBtn);
+          novoContainer.appendChild(naoBtn);
+          messagesDiv.appendChild(novoContainer);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+
+        container.appendChild(btn);
+      });
+      
+      // Adiciona os botões ao chat
+      messagesDiv.appendChild(container);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Permite enviar mensagem pressionando Enter
+    document.getElementById("userInput").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Evita o comportamento padrão do Enter
+        sendMessage();  // Chama a função de enviar mensagem
+      }
+    });
+  </script>
+</body>
+</html>
