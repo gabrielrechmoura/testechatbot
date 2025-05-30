@@ -1,18 +1,19 @@
 const currentPath = window.location.pathname;
 
-// Trata a raiz (/) ou /index.html como a mesma coisa
+// Normaliza o caminho atual: trata / e /index.html como o mesmo
 const normalizedPath =
-  currentPath.endsWith('/') || currentPath.endsWith('/index.html')
+  currentPath === '/testechatbot/' || currentPath === '/testechatbot'
     ? '/testechatbot/index.html'
     : currentPath;
 
 document.querySelectorAll("header nav a").forEach(link => {
   const linkPath = new URL(link.href).pathname;
 
-  // Normaliza o caminho do link removendo a barra final, se existir
-  const normalizedLinkPath = linkPath.endsWith('/') && linkPath.length > 1
-    ? linkPath.slice(0, -1)
-    : linkPath;
+  // Também normaliza o link: trata / e /index.html como o mesmo
+  const normalizedLinkPath =
+    linkPath === '/testechatbot/' || linkPath === '/testechatbot'
+      ? '/testechatbot/index.html'
+      : linkPath;
 
   if (normalizedLinkPath === normalizedPath) {
     link.classList.add("ativo");
