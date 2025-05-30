@@ -1,9 +1,10 @@
 const currentPath = window.location.pathname;
 
-// Normaliza o caminho atual removendo a barra final, se existir
-const normalizedPath = currentPath.endsWith('/') && currentPath.length > 1
-  ? currentPath.slice(0, -1)
-  : currentPath;
+// Trata a raiz (/) ou /index.html como a mesma coisa
+const normalizedPath =
+  currentPath.endsWith('/') || currentPath.endsWith('/index.html')
+    ? '/testechatbot/index.html'
+    : currentPath;
 
 document.querySelectorAll("header nav a").forEach(link => {
   const linkPath = new URL(link.href).pathname;
